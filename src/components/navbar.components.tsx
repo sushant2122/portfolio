@@ -45,19 +45,30 @@ function NavbarComponent() {
                                 <li>
                                     <Link to="/"
                                         onClick={() => setismenuopen(false)}
-                                        className="block  py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 hover:text-white " aria-current="page">Home</Link>
+                                        className="block py-2 pr-4 pl-3
+                                                text-black lg:text-gray-700 border-b border-gray-100 lg:border-0 hover:text-white lg:hover:text-primary-gold hover:bg-primary-gold lg:hover:bg-transparent lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Home</Link>
                                 </li>
                                 <li>
-                                    <Link onClick={() => setismenuopen(false)} to="about" className="block  py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 hover:text-white ">About me </Link>
+                                    <Link
+                                        onClick={() => setismenuopen(false)}
+                                        to="about"
+                                        className="block py-2 pr-4 pl-3
+                                                text-black lg:text-gray-700 border-b border-gray-100 lg:border-0 hover:text-white lg:hover:text-primary-gold hover:bg-primary-gold lg:hover:bg-transparent lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                                    >
+                                        About me
+                                    </Link>
                                 </li>
                                 <li>
-                                    <Link onClick={() => setismenuopen(false)} to="skill" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 hover:text-white ">Skills</Link>
+                                    <Link onClick={() => setismenuopen(false)} to="skill" className="block py-2 pr-4 pl-3
+                                                text-black lg:text-gray-700 border-b border-gray-100 lg:border-0 hover:text-white lg:hover:text-primary-gold hover:bg-primary-gold lg:hover:bg-transparent lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Skills</Link>
                                 </li>
                                 <li>
-                                    <Link onClick={() => setismenuopen(false)} to="project" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 hover:text-white ">Projects</Link>
+                                    <Link onClick={() => setismenuopen(false)} to="project" className="block py-2 pr-4 pl-3
+                                                text-black lg:text-gray-700 border-b border-gray-100 lg:border-0 hover:text-white lg:hover:text-primary-gold hover:bg-primary-gold lg:hover:bg-transparent lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700  ">Projects</Link>
                                 </li>
                                 <li>
-                                    <Link onClick={() => setismenuopen(false)} to="experience" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 hover:text-white ">Experience</Link>
+                                    <Link onClick={() => setismenuopen(false)} to="experience" className="block py-2 pr-4 pl-3
+                                                text-black lg:text-gray-700 border-b border-gray-100 lg:border-0 hover:text-white lg:hover:text-primary-gold hover:bg-primary-gold lg:hover:bg-transparent lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 ">Experience</Link>
                                 </li>
 
                             </ul>
