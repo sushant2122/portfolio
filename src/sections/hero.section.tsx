@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { FaDownload } from "react-icons/fa";
 import herophoto from "../assets/s1.png";
-import resume from "../assets/resume.pdf";
+import resume from "../../public/resume.pdf";
 function HeroSection() {
     return (
         <>
