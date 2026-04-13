@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 const experiences = [
     { name: "Islington college", from: "2022", to: "2025", position: "Student", color: "step-primary" },
     { name: "Sangalo tech", from: "2025", to: "2025", position: "Frontend Intern", color: "step-accent" },
-    { name: "Click point", from: "2026", to: "on going", position: "Full Stack Intern", color: "step-warning" },
+    { name: "Click point", from: "2026", to: "on going", position: "Full Stack Intern", color: "step-info" },
     { name: "Sangalo tech", from: "2025", to: "2025", position: "Frontend Intern", color: "step-accent" },
     { name: "Islington college", from: "2022", to: "2025", position: "Student", color: "step-primary" },
 
