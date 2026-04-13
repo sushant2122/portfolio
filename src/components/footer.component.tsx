@@ -29,10 +29,10 @@ function FooterComponent() {
                                 <h2 className="mb-6 text-sm font-semibold text-heading uppercase">Contact Info</h2>
                                 <ul className="text-body font-medium">
                                     <li className="mb-4">
-                                        <a href="https://flowbite.com/" className=" flex gap-2 items-center hover:text-white"> <FaEnvelope size={15} /> sushantpaudyal@gmail.com </a>
+                                        <a href="https://flowbite.com/" className=" flex gap-2 items-center dark:hover:text-white hover:text-primary-gold"> <FaEnvelope size={15} /> sushantpaudyal@gmail.com </a>
                                     </li>
                                     <li>
-                                        <a href="https://tailwindcss.com/" className=" flex gap-2 items-center hover:text-white"><FaPhone size={15} />+977 9861200112</a>
+                                        <a href="https://tailwindcss.com/" className=" flex gap-2 items-center dark:hover:text-white hover:text-primary-gold"><FaPhone size={15} />+977 9861200112</a>
                                     </li>
                                 </ul>
                             </div>
@@ -41,12 +41,12 @@ function FooterComponent() {
                                 <h2 className="mb-6 text-sm font-semibold text-heading uppercase">Legal</h2>
                                 <ul className="text-body font-medium">
                                     <li className="mb-4">
-                                        <a href="#" className=" flex gap-2 items-center hover:text-white">
+                                        <a href="#" className=" flex gap-2 items-center dark:hover:text-white hover:text-primary-gold">
                                             < RiFilePaperFill size={15} />
                                             Privacy Policy</a>
                                     </li>
                                     <li>
-                                        <a href="#" className=" flex gap-2 items-center hover:text-white">
+                                        <a href="#" className=" flex gap-2 items-center dark:hover:text-white hover:text-primary-gold">
                                             <IoIosPaper size={15} />
                                             Terms &amp; Conditions</a>
                                     </li>
