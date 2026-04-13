@@ -6,6 +6,7 @@ import SkillSection from '../sections/skill.section'
 import ExperienceSection from '../sections/experience.section'
 import ContactSection from '../sections/contact.section'
 import ProjectSection from '../sections/project.section'
+import ErrorPage from '../pages/error.page'
 
 function RoutingConfig() {
     return (
@@ -20,6 +21,7 @@ function RoutingConfig() {
                         <Route path="/contact" element={<ContactSection />}></Route>
                         <Route path="/project" element={<ProjectSection />}></Route>
                     </Route>
+                    <Route path='*' element={<ErrorPage />} />
 
 
                 </Routes>
