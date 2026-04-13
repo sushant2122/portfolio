@@ -7,11 +7,13 @@ import ExperienceSection from '../sections/experience.section'
 import ContactSection from '../sections/contact.section'
 import ProjectSection from '../sections/project.section'
 import ErrorPage from '../pages/error.page'
+import { ToastContainer } from 'react-toastify'
 
 function RoutingConfig() {
     return (
         <>
             <BrowserRouter>
+                <ToastContainer />
                 <Routes>
                     <Route path="/" element={<HomeLayout />}>
                         <Route index element={<HeroSection />}></Route>

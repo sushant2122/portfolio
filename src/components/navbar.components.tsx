@@ -1,12 +1,16 @@
 import { DarkThemeToggle } from "flowbite-react";
 import { motion } from "framer-motion"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCode } from "react-icons/fa";
 import { FaHandshake } from "react-icons/fa6";
 import { Link } from "react-router";
+import { toast } from "react-toastify";
 
 function NavbarComponent() {
     const [ismenuopen, setismenuopen] = useState(false);
+    useEffect(() => {
+        toast.success("Welcome to My Portfolio.")
+    })
     return (
         <>
             <header className="sticky top-0 z-50 bg-white dark:bg-primary-black">
