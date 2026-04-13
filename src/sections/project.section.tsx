@@ -13,7 +13,7 @@ const projects = [
 function ProjectSection() {
     return (
         <>
-            <section id="project" className='py-10  max-w-screen-xl mx-auto '>
+            <section id="project" className='bg-white dark:bg-gray-900 py-10  max-w-screen-xxl mx-auto  '>
 
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
@@ -36,7 +36,7 @@ function ProjectSection() {
                     transition={{ duration: 1 }}
                     className="px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
                     {projects.map((project) => (
-                        <div className="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs rounded sm:w-full">
+                        <div className="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs rounded sm:w-full dark:text-white dark:bg-gray-800  ">
                             <a href="#">
                                 <img className="rounded-base" src={project.img_url} alt="" />
 
@@ -46,7 +46,7 @@ function ProjectSection() {
                             </a>
                             <p className="mb-6 text-body">{project.description}</p>
                             <div className="flex justify-between">
-                                <a href={project.live_url} className="inline-flex gap-2 items-center text-body bg-neutral-secondary-medium bg-primary-gold box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base rounded text-sm px-4 py-2.5 focus:outline-none">
+                                <a href={project.live_url} className="inline-flex gap-2 items-center text-body bg-neutral-secondary-medium bg-primary-black box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base rounded text-sm px-4 py-2.5 focus:outline-non text-white dark:hover:bg-primary-gold ">
                                     Visit Live Server
                                     <FaLink />
                                 </a>

@@ -17,7 +17,7 @@ function ContactSection() {
 
                     </motion.div>
 
-                    <form action="#" className="space-y-8">
+                    <form action="#" className="space-y-8 border border-white p-10 rounded">
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your email</label>
                             <input type="email" id="email" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-primary-gold focus:border-primary-gold block w-full p-2.5 " placeholder="name@flowbite.com" required />

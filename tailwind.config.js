@@ -1,9 +1,11 @@
 import daisyui from 'daisyui'
+import flowbiteReact from "flowbite-react/plugin/tailwindcss";
 
 /** @type {import('tailwindcss').Config} */
 
 export default {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  darkMode: 'class',
+  content: ["./src/**/*.{js,jsx,ts,tsx}", ".flowbite-react/class-list.json"],
   theme: {
     extend: {
       colors: {
@@ -15,6 +17,6 @@ export default {
   },
   plugins: [
     daisyui,
+    flowbiteReact
   ],
 }
-

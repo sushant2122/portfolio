@@ -11,10 +11,10 @@ function AboutSection() {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
 
-                    className="mx-auto grid max-w-screen-xl rounded-lg  p-4 dark:bg-gray-800 md:p-8 lg:grid-cols-12 lg:gap-8 lg:p-16 xl:gap-16">
+                    className="mx-auto grid max-w-screen-xl rounded-lg  p-4  md:p-8 lg:grid-cols-12 lg:gap-8 lg:p-16 xl:gap-16">
                     <div className="lg:col-span-5 lg:mt-0 flex justify-center">
                         <a href="#">
-                            <img className="mb-4 h-56 w-56 dark:hidden sm:h-96 sm:w-96 md:h-120 md:w-full" src={abtimg} alt="about image." />
+                            <img className="mb-4  sm:h-96 sm:w-full md:h-120 md:w-full " src={abtimg} alt="about image." />
 
                         </a>
                     </div>
@@ -30,30 +30,30 @@ function AboutSection() {
                         <h2 className="mb-3 text-xl font-light leading-tight tracking-tight text-gray-900 dark:text-white md:text-4xl">
                             <span className="text-primary-gold">Full Stack Developer</span>
                         </h2>
-                        <p className=" text-gray-500 dark:text-gray-400">
+                        <p className=" text-gray-500 dark:text-gray-400 text-justify">
                             I completed my Bachelor’s degree in BSc (Hons) Computing from Islington College with First Class Honours. During my academic journey, I developed a strong foundation in software engineering, web development, and problem-solving. Alongside my studies, I also completed additional training in Full Stack Development and DevOps, which helped me gain hands-on experience with modern technologies and real-world development workflows.
 
                         </p>
-                        <p className=" pt-2 jumb-6 text-gray-500 dark:text-gray-400">
+                        <p className=" pt-2 jumb-6 text-gray-500 dark:text-gray-400 text-justify">
                             Currently, I am working as a Full Stack Developer, focusing on building modern, responsive, and scalable web applications using technologies like React, Node.js, and Tailwind CSS.
                         </p>
-                        <a href="#" className="inline-flex items-center justify-center rounded-lg bg-primary-700 px-5 py-3 text-center text-base font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"> Pre-order now </a>
 
-                        <div className="flex gap-4 mt-4 sm:justify-center sm:mt-0">
-                            <a href="#" className="text-body hover:text-primary-gold">
+
+                        <div className="flex pt-8 gap-4 mt-4 sm:justify-center sm:mt-0">
+                            <a href="#" className="text-body hover:text-primary-gold dark:text-white dark:hover:text-primary-gold">
                                 <FaFacebook size={25} />
                                 <span className="sr-only">Facebook page</span>
                             </a>
-                            <a href="#" className="text-body hover:text-primary-gold ms-5">
+                            <a href="#" className="text-body hover:text-primary-gold ms-5 dark:text-white dark:hover:text-primary-gold">
                                 <FaDiscord size={25} />
                                 <span className="sr-only">Discord community</span>
                             </a>
-                            <a href="#" className="text-body hover:text-primary-gold ms-5">
+                            <a href="#" className="text-body hover:text-primary-gold ms-5 dark:text-white dark:hover:text-primary-gold">
 
                                 <FaLinkedin size={25} />
                                 <span className="sr-only">LinkedIn page</span>
                             </a>
-                            <a href="#" className="text-body hover:text-primary-gold ms-5">
+                            <a href="#" className="text-body hover:text-primary-gold ms-5 dark:text-white dark:hover:text-primary-gold">
                                 <FaGithub size={25} />
                                 <span className="sr-only">GitHub account</span>
                             </a>

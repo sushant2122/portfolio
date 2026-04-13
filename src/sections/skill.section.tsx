@@ -17,7 +17,7 @@ const skills = [
 function SkillSection() {
     return (
         <section id="skill" className="bg-white dark:bg-gray-900 py-16">
-            <div className="max-w-screen-xl mx-auto px-4">
+            <div className="max-w-screen-xl mx-auto px-8 py-8 rounded">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -47,17 +47,17 @@ function SkillSection() {
 
                             <div className="w-full">
                                 <div className="flex justify-between mb-1">
-                                    <span className="text-sm font-medium text-gray-700 ">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-white ">
                                         {skill.name}
                                     </span>
-                                    <span className="text-sm text-gray-500">
+                                    <span className="text-sm text-gray-500 dark:text-white">
                                         {skill.level}%
                                     </span>
                                 </div>
 
                                 <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
                                     <div
-                                        className="bg-primary-gold h-2 rounded-full"
+                                        className="bg-primary-gold h-2 rounded-full "
                                         style={{ width: `${skill.level}%` }}
                                     ></div>
                                 </div>

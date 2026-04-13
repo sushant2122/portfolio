@@ -1,3 +1,4 @@
+import { DarkThemeToggle } from "flowbite-react";
 import { motion } from "framer-motion"
 import { useState } from "react";
 import { FaCode } from "react-icons/fa";
@@ -8,23 +9,27 @@ function NavbarComponent() {
     const [ismenuopen, setismenuopen] = useState(false);
     return (
         <>
-            <header className="sticky top-0 z-50">
-                <nav className="bg-white border-gray-200  px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+            <header className="sticky top-0 z-50 bg-white dark:bg-primary-black">
+                <nav className=" border-gray-200  px-4 lg:px-6 py-2.5 dark:bg-gray-800">
                     <motion.div
                         initial={{ opacity: 0, x: -100 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 1 }}
                         className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-                        <Link to="/" className="flex gap-2 items-center">
+                        <Link to="/" className="flex gap-2 items-center dark:text-white">
                             <FaCode size={25} />
                             <span className=" self-center text-xl text-primary-black font-semibold whitespace-nowrap dark:text-primary-gold">Sushant Paudyal</span>
                         </Link>
-                        <div className="flex items-center lg:order-2">
+                        <div className="flex items-center lg:order-2 gap-1">
 
                             <Link to="contact" className=" flex items-center gap-2 text-black bg-primary-gold hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-3 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                                 <FaHandshake />
-                                Hire  me</Link>
+                                <span className="hidden sm:block ">Hire me</span></Link>
 
+
+                            <div className="flex items-center rounded ">
+                                <DarkThemeToggle className="   hover:bg-primary-black text-primary-black border hover:text-white dark:text-white dark:bg-secondary-gray dark:hover:bg-primary-gold" />
+                            </div>
                             <button
                                 onClick={() => setismenuopen(!ismenuopen)}
                                 data-collapse-toggle="mobile-menu-2" type="button" className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-gold dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
@@ -38,19 +43,19 @@ function NavbarComponent() {
                             className={`${ismenuopen ? "block" : "hidden"} justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2`}>
                             <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                                 <li>
-                                    <Link to="/" className="block py-2 pr-4 pl-3 text-gray-700 bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Home</Link>
+                                    <Link to="/" className="block  py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 hover:text-primary-gold " aria-current="page">Home</Link>
                                 </li>
                                 <li>
-                                    <Link onClick={() => setismenuopen(false)} to="about" className="block  py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">About me </Link>
+                                    <Link onClick={() => setismenuopen(false)} to="about" className="block  py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 hover:text-primary-gold ">About me </Link>
                                 </li>
                                 <li>
-                                    <Link onClick={() => setismenuopen(false)} to="skill" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Skills</Link>
+                                    <Link onClick={() => setismenuopen(false)} to="skill" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 hover:text-primary-gold ">Skills</Link>
                                 </li>
                                 <li>
-                                    <Link onClick={() => setismenuopen(false)} to="project" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Projects</Link>
+                                    <Link onClick={() => setismenuopen(false)} to="project" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 hover:text-primary-gold ">Projects</Link>
                                 </li>
                                 <li>
-                                    <Link onClick={() => setismenuopen(false)} to="experience" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Experience</Link>
+                                    <Link onClick={() => setismenuopen(false)} to="experience" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-primary-gold lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 ">Experience</Link>
                                 </li>
 
                             </ul>

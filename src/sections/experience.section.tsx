@@ -3,13 +3,15 @@ import { motion } from "framer-motion"
 const experiences = [
     { name: "Islington college", from: "2022", to: "2025", position: "Student", color: "step-primary" },
     { name: "Sangalo tech", from: "2025", to: "2025", position: "Frontend Intern", color: "step-accent" },
-    { name: "Islington college", from: "2026", to: "on going", position: "Full Stack Intern", color: "step-warning" },
+    { name: "Click point", from: "2026", to: "on going", position: "Full Stack Intern", color: "step-warning" },
+    { name: "Sangalo tech", from: "2025", to: "2025", position: "Frontend Intern", color: "step-accent" },
+    { name: "Islington college", from: "2022", to: "2025", position: "Student", color: "step-primary" },
 
 ]
 function ExperienceSection() {
     return (
         <>
-            <section id="experience" className="bg-white dark:bg-gray-900 py-16">
+            <section id="experience" className="bg-white dark:bg-gray-900 py-16 ">
                 <div className="max-w-screen-xl mx-auto px-4">
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
@@ -34,7 +36,7 @@ function ExperienceSection() {
                             {experiences.map((experience) => (
                                 <li className={`step ${experience.color}`} >
                                     <div className="flex gap-2">
-                                        <span className="text-primary-black">{experience.name}</span>
+                                        <span className="text-primary-black dark:text-white">{experience.name}</span>
                                         <span className="text-secondary-gray">({experience.from}-{experience.to})</span>
                                         <span className="text-primary-gold">{experience.position}</span>
 
