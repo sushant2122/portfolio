@@ -8,6 +8,9 @@ import ContactSection from '../sections/contact.section'
 import ProjectSection from '../sections/project.section'
 import ErrorPage from '../pages/error.page'
 import { ToastContainer } from 'react-toastify'
+import LoginPage from '../pages/login.page'
+import EmailResetPage from '../pages/email_reset.page'
+import PasswordResetPage from '../pages/password_reset.page'
 
 function RoutingConfig() {
     return (
@@ -24,6 +27,9 @@ function RoutingConfig() {
                         <Route path="/project" element={<ProjectSection />}></Route>
                     </Route>
                     <Route path='*' element={<ErrorPage />} />
+                    <Route path='/login' element={<LoginPage />} />
+                    <Route path='/reset' element={<EmailResetPage />} />
+                    <Route path='/resetpassword/:token' element={<PasswordResetPage />} />
 
 
                 </Routes>
