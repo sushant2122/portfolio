@@ -1,4 +1,4 @@
-import { FaEdit, FaEye, FaInfo, FaPlus, FaTrash } from "react-icons/fa"
+import { FaBeer, FaEdit, FaEye, FaInfo, FaPlus, FaTrash } from "react-icons/fa"
 import { FaXmark } from "react-icons/fa6"
 
 import { useState } from "react";
@@ -25,7 +25,7 @@ function AdminSkillPage() {
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 
                                         </div>
-                                        <input type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search experience..." />
+                                        <input type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search skill..." />
                                     </div>
                                 </form>
                             </div>
@@ -34,7 +34,7 @@ function AdminSkillPage() {
                                     onClick={() => setiscreateopen(true)}
                                     type="button" data-modal-target="createExperienceModal" data-modal-toggle="createExperienceModal" className="flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-500 dark:hover:bg-blue-600 focus:outline-none dark:focus:ring-blue-800">
                                     <FaPlus className="mr-2" />
-                                    Add Experience
+                                    Add Skill
                                 </button>
 
                             </div>
@@ -43,11 +43,9 @@ function AdminSkillPage() {
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" className="px-4 py-4">Organization</th>
-                                        <th scope="col" className="px-4 py-3">Position</th>
-
-                                        <th scope="col" className="px-4 py-3">From Date</th>
-                                        <th scope="col" className="px-4 py-3">To Date</th>
+                                        <th scope="col" className="px-4 py-3">Logo</th>
+                                        <th scope="col" className="px-4 py-4">Title</th>
+                                        <th scope="col" className="px-4 py-3">level</th>
                                         <th scope="col" className="px-4 py-3">
                                             <span className="">Actions</span>
                                         </th>
@@ -56,11 +54,10 @@ function AdminSkillPage() {
                                 <tbody>
 
                                     <tr className="border-b dark:border-gray-700">
-                                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">Microsoft</th>
-                                        <td className="px-4 py-3">Software Engineer</td>
+                                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"><FaBeer /></th>
 
-                                        <td className="px-4 py-3">2018-06-01</td>
-                                        <td className="px-4 py-3">2020-12-31</td>
+                                        <td className="px-4 py-3">Git</td>
+                                        <td className="px-4 py-3">20%</td>
                                         <td className="px-4 py-3 flex items-center">
 
                                             <div className=" z-10 rounded shadow dark:bg-gray-700 dark:divide-gray-600">
