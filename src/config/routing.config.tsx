@@ -11,6 +11,12 @@ import { ToastContainer } from 'react-toastify'
 import LoginPage from '../pages/login.page'
 import EmailResetPage from '../pages/email_reset.page'
 import PasswordResetPage from '../pages/password_reset.page'
+import AdminLayout from '../layout/admin.layout'
+import AdminDashboardPage from '../pages/admin/admin.dashboard.page'
+import AdminProjectPage from '../pages/admin/admin.project.page'
+import AdminSkillPage from '../pages/admin/admin.skill.page'
+import AdminExperiencePage from '../pages/admin/admin.experience.page'
+import AdminMessagePage from '../pages/admin/admin.message.page'
 
 function RoutingConfig() {
     return (
@@ -30,6 +36,16 @@ function RoutingConfig() {
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/reset' element={<EmailResetPage />} />
                     <Route path='/resetpassword/:token' element={<PasswordResetPage />} />
+
+                    <Route path='/admin' element={<AdminLayout />}>
+                        <Route index element={<AdminDashboardPage />}></Route>
+                        <Route path="project" element={<AdminProjectPage />}></Route>
+                        <Route path="skill" element={<AdminSkillPage />}></Route>
+                        <Route path="experience" element={<AdminExperiencePage />}></Route>
+                        <Route path="message" element={<AdminMessagePage />}></Route>
+
+                    </Route>
+
 
 
                 </Routes>
