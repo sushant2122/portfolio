@@ -1,16 +1,7 @@
 import { motion } from "framer-motion";
 
-import { FaReact, FaNodeJs, FaHtml5, FaCss3Alt, FaGitAlt } from "react-icons/fa";
-import { SiTailwindcss, SiJavascript, SiMongodb } from "react-icons/si";
 import github from "../assets/github.svg"
 const skills = [
-    // { name: "HTML", icon: <FaHtml5 />, level: 90 },
-    // { name: "CSS", icon: <FaCss3Alt />, level: 85 },
-    // { name: "JavaScript", icon: <SiJavascript />, level: 80 },
-    // { name: "React", icon: <FaReact />, level: 85 },
-    // { name: "Tailwind", icon: <SiTailwindcss />, level: 90 },
-    // { name: "Node.js", icon: <FaNodeJs />, level: 75 },
-    // { name: "MongoDB", icon: <SiMongodb />, level: 70 },
     { name: "Git", icon: github, level: 80 },
 ];
 
@@ -41,8 +32,8 @@ function SkillSection() {
 
                     {skills.map((skill) => (
                         <div className="flex items-center gap-4" >
-                            <div className="text-3xl text-primary-gold  bg-primary-gold rounded-full ">
-                                <img src={skill.icon} className="w-10 h-10 " />
+                            <div className="text-primary-gold  bg-primary-gold rounded ">
+                                <img src={skill.icon} className="w-10 h-auto border " />
                             </div>
 
 
