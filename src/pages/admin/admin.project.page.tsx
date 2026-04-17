@@ -73,7 +73,6 @@ function AdminProjectPage() {
     const {
         register: updateRegister,
         handleSubmit: handleUpdateSubmit,
-        formState: { errors: updateErrors },
         reset: updateReset,
     } = useForm<Partial<PortfolioType>>({
         resolver: yupResolver(updateValidationSchema) as any,

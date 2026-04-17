@@ -67,7 +67,6 @@ function AdminSkillPage() {
     const {
         register: updateRegister,
         handleSubmit: handleUpdateSubmit,
-        formState: { errors: updateErrors },
         reset: updateReset,
         setValue: setUpdateValue
     } = useForm<Partial<SkillType>>({
