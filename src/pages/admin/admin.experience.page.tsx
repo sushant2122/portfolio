@@ -1,14 +1,16 @@
 import { FaEdit, FaEye, FaPlus, FaTrash, FaSearch } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import { useState } from "react";
-
-// Define the Experience type
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import expSvc from "../../services/experience.service";
+import type { ExperienceType } from "../../services/experience.service";
+// Define the Experience interface matching backend model
 interface Experience {
-    id: number;
-    organization: string;
+    experience_id: number;  // Changed from 'id' to 'experience_id'
+    title: string;
     position: string;
-    fromDate: string;
-    toDate: string;
+    from: string;
+    to: string;
 }
 
 function AdminExperiencePage() {
@@ -17,88 +19,147 @@ function AdminExperiencePage() {
     const [iseditopen, setiseditopen] = useState<boolean>(false);
     const [isdeleteopen, setisdeleteopen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
 
-    // Sample data structure
-    const [experiences, setExperiences] = useState<Experience[]>([
-        { id: 1, organization: "Microsoft", position: "Software Engineer", fromDate: "2018-06-01", toDate: "2020-12-31" },
-        { id: 2, organization: "Google", position: "Senior Frontend Developer", fromDate: "2021-01-15", toDate: "2024-03-20" },
-        { id: 3, organization: "Amazon", position: "Full Stack Developer", fromDate: "2016-05-10", toDate: "2018-05-25" }
-    ]);
-
+    // State for experiences from API
+    const [experiences, setExperiences] = useState<Experience[]>([]);
     const [currentExperience, setCurrentExperience] = useState<Experience | null>(null);
     const [formData, setFormData] = useState({
-        organization: "",
+        title: "",
         position: "",
-        fromDate: "",
-        toDate: ""
+        from: "",
+        to: ""
     });
 
+    // Fetch all experiences
+    const fetchExperiences = async () => {
+        setLoading(true);
+        try {
+            const response = await expSvc.listExps();
+            console.log("Experiences response:", response);
+
+            if (response?.data?.result) {
+                setExperiences(response.data.result);
+            }
+        } catch (error: any) {
+            console.error("Error fetching experiences:", error);
+            toast.error(error?.response?.data?.message || "Failed to load experiences");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Create new experience
+    const handleCreateSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const experienceData: ExperienceType = {
+            title: formData.title,
+            position: formData.position,
+            from: formData.from,
+            to: formData.to
+        };
+
+        try {
+            const response = await expSvc.createExp(experienceData);
+            console.log("Create response:", response);
+
+            toast.success("Experience created successfully");
+            setiscreateopen(false);
+            setFormData({ title: "", position: "", from: "", to: "" });
+            fetchExperiences(); // Refresh the list
+        } catch (error: any) {
+            console.error("Error creating experience:", error);
+            toast.error(error?.response?.data?.message || "Failed to create experience");
+        }
+    };
+
+    // Update experience
+    const handleEditSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!currentExperience) return;
+
+        const updateData = {
+            title: formData.title,
+            position: formData.position,
+            from: formData.from,
+            to: formData.to
+        };
+
+        try {
+            const response = await expSvc.updateExpDetail(currentExperience.experience_id, updateData);
+            console.log("Update response:", response);
+
+            toast.success("Experience updated successfully");
+            setiseditopen(false);
+            setCurrentExperience(null);
+            setFormData({ title: "", position: "", from: "", to: "" });
+            fetchExperiences(); // Refresh the list
+        } catch (error: any) {
+            console.error("Error updating experience:", error);
+            toast.error(error?.response?.data?.message || "Failed to update experience");
+        }
+    };
+
+    // Delete experience
+    const confirmDelete = async () => {
+        if (!currentExperience) return;
+
+        try {
+            const response = await expSvc.deleteExp(currentExperience.experience_id);
+            console.log("Delete response:", response);
+
+            toast.success("Experience deleted successfully");
+            setisdeleteopen(false);
+            setCurrentExperience(null);
+            fetchExperiences(); // Refresh the list
+        } catch (error: any) {
+            console.error("Error deleting experience:", error);
+            toast.error(error?.response?.data?.message || "Failed to delete experience");
+        }
+    };
+
+    // View experience details
     const handleView = (experience: Experience): void => {
         setCurrentExperience(experience);
         setisreadopen(true);
     };
 
+    // Edit experience
     const handleEdit = (experience: Experience): void => {
         setCurrentExperience(experience);
         setFormData({
-            organization: experience.organization,
+            title: experience.title,
             position: experience.position,
-            fromDate: experience.fromDate,
-            toDate: experience.toDate
+            from: experience.from,
+            to: experience.to
         });
         setiseditopen(true);
     };
 
+    // Delete confirmation
     const handleDelete = (experience: Experience): void => {
         setCurrentExperience(experience);
         setisdeleteopen(true);
     };
 
-    const confirmDelete = (): void => {
-        setExperiences(experiences.filter(exp => exp.id !== currentExperience?.id));
-        setisdeleteopen(false);
-        setCurrentExperience(null);
-    };
-
-    const handleCreateSubmit = (e: React.FormEvent): void => {
-        e.preventDefault();
-        const newExperience: Experience = {
-            id: experiences.length + 1,
-            organization: formData.organization,
-            position: formData.position,
-            fromDate: formData.fromDate,
-            toDate: formData.toDate
-        };
-        setExperiences([...experiences, newExperience]);
-        setiscreateopen(false);
-        setFormData({ organization: "", position: "", fromDate: "", toDate: "" });
-    };
-
-    const handleEditSubmit = (e: React.FormEvent): void => {
-        e.preventDefault();
-        if (currentExperience) {
-            const updatedExperiences = experiences.map(exp =>
-                exp.id === currentExperience.id
-                    ? { ...exp, ...formData }
-                    : exp
-            );
-            setExperiences(updatedExperiences);
-            setiseditopen(false);
-            setCurrentExperience(null);
-            setFormData({ organization: "", position: "", fromDate: "", toDate: "" });
-        }
-    };
-
+    // Filter experiences based on search term
     const filteredExperiences: Experience[] = experiences.filter(exp =>
-        exp.organization.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        exp.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         exp.position.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    // Load experiences on component mount
+    useEffect(() => {
+        fetchExperiences();
+    }, []);
 
     return (
         <>
             {/* Start block */}
             <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
-                <h1 className="text-3xl font-bold text-blue-600 dark:text-white my-4 p-3">
+                <h1 className="text-3xl font-bold text-primary-gold dark:text-white my-4 p-3">
                     Experience
                 </h1>
                 <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
@@ -117,7 +178,7 @@ function AdminExperiencePage() {
                                             id="simple-search"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-gold focus:border-primary-gold block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-gold dark:focus:border-primary-gold"
                                             placeholder="Search experience..."
                                         />
                                     </div>
@@ -127,10 +188,10 @@ function AdminExperiencePage() {
                                 <button
                                     onClick={() => {
                                         setiscreateopen(true);
-                                        setFormData({ organization: "", position: "", fromDate: "", toDate: "" });
+                                        setFormData({ title: "", position: "", from: "", to: "" });
                                     }}
                                     type="button"
-                                    className="flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-500 dark:hover:bg-blue-600 focus:outline-none dark:focus:ring-blue-800"
+                                    className="flex items-center justify-center text-white bg-primary-black hover:bg-primary-gold focus:ring-4 focus:ring-primary-gold font-medium rounded-lg text-sm px-4 py-2 dark:bg-secondary-gray dark:hover:bg-primary-gold focus:outline-none dark:focus:ring-primary-gold"
                                 >
                                     <FaPlus className="mr-2" />
                                     Add Experience
@@ -138,65 +199,71 @@ function AdminExperiencePage() {
                             </div>
                         </div>
                         <div className="overflow-x-auto">
-                            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" className="px-4 py-4">Organization</th>
-                                        <th scope="col" className="px-4 py-3">Position</th>
-                                        <th scope="col" className="px-4 py-3">From Date</th>
-                                        <th scope="col" className="px-4 py-3">To Date</th>
-                                        <th scope="col" className="px-4 py-3">
-                                            <span className="">Actions</span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filteredExperiences.map((experience) => (
-                                        <tr key={experience.id} className="border-b dark:border-gray-700">
-                                            <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                {experience.organization}
+                            {loading ? (
+                                <div className="flex justify-center items-center py-12">
+                                    <div className="loading loading-spinner loading-lg text-primary-gold"></div>
+                                </div>
+                            ) : (
+                                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        <tr>
+                                            <th scope="col" className="px-4 py-4">Organization</th>
+                                            <th scope="col" className="px-4 py-3">Position</th>
+                                            <th scope="col" className="px-4 py-3">From Date</th>
+                                            <th scope="col" className="px-4 py-3">To Date</th>
+                                            <th scope="col" className="px-4 py-3">
+                                                <span className="">Actions</span>
                                             </th>
-                                            <td className="px-4 py-3">{experience.position}</td>
-                                            <td className="px-4 py-3">{experience.fromDate}</td>
-                                            <td className="px-4 py-3">{experience.toDate}</td>
-                                            <td className="px-4 py-3 flex items-center">
-                                                <div className="z-10 rounded shadow dark:bg-gray-700 dark:divide-gray-600">
-                                                    <ul className="flex flex-wrap gap-3 text-sm" aria-labelledby="dropdownButton2">
-                                                        <li>
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleView(experience)}
-                                                                className="flex items-center justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200 rounded"
-                                                            >
-                                                                <FaEye />
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleEdit(experience)}
-                                                                className="flex items-center p-2 justify-center hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200 rounded"
-                                                            >
-                                                                <FaEdit />
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleDelete(experience)}
-                                                                className="flex items-center p-2 items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-600 text-red-500 dark:hover:text-red-400 rounded"
-                                                            >
-                                                                <FaTrash />
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                            {filteredExperiences.length === 0 && (
+                                    </thead>
+                                    <tbody>
+                                        {filteredExperiences.map((experience) => (
+                                            <tr key={experience.experience_id} className="border-b dark:border-gray-700">
+                                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                    {experience.title}
+                                                </th>
+                                                <td className="px-4 py-3">{experience.position}</td>
+                                                <td className="px-4 py-3">{experience.from}</td>
+                                                <td className="px-4 py-3">{experience.to || "Present"}</td>
+                                                <td className="px-4 py-3 flex items-center">
+                                                    <div className="z-10 rounded shadow dark:bg-gray-700 dark:divide-gray-600">
+                                                        <ul className="flex flex-wrap gap-3 text-sm" aria-labelledby="dropdownButton2">
+                                                            <li>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleView(experience)}
+                                                                    className="flex items-center justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200 rounded"
+                                                                >
+                                                                    <FaEye />
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleEdit(experience)}
+                                                                    className="flex items-center p-2 justify-center hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200 rounded"
+                                                                >
+                                                                    <FaEdit />
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleDelete(experience)}
+                                                                    className="flex items-center p-2 items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-600 text-red-500 dark:hover:text-red-400 rounded"
+                                                                >
+                                                                    <FaTrash />
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+                            {!loading && filteredExperiences.length === 0 && (
                                 <div className="text-center py-8">
                                     <p className="text-gray-500 dark:text-gray-400">No experiences found</p>
                                 </div>
@@ -224,13 +291,13 @@ function AdminExperiencePage() {
                         <form onSubmit={handleCreateSubmit}>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organization</label>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organization / Title</label>
                                     <input
                                         type="text"
-                                        name="organization"
-                                        value={formData.organization}
-                                        onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        name="title"
+                                        value={formData.title}
+                                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-gold focus:border-primary-gold block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-gold dark:focus:border-primary-gold"
                                         placeholder="Enter organization name"
                                         required
                                     />
@@ -242,7 +309,7 @@ function AdminExperiencePage() {
                                         name="position"
                                         value={formData.position}
                                         onChange={(e) => setFormData({ ...formData, position: e.target.value })}
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-gold focus:border-primary-gold block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-gold dark:focus:border-primary-gold"
                                         placeholder="Enter your position"
                                         required
                                     />
@@ -251,9 +318,9 @@ function AdminExperiencePage() {
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">From Date</label>
                                     <input
                                         type="date"
-                                        name="fromDate"
-                                        value={formData.fromDate}
-                                        onChange={(e) => setFormData({ ...formData, fromDate: e.target.value })}
+                                        name="from"
+                                        value={formData.from}
+                                        onChange={(e) => setFormData({ ...formData, from: e.target.value })}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required
                                     />
@@ -262,9 +329,9 @@ function AdminExperiencePage() {
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">To Date</label>
                                     <input
                                         type="date"
-                                        name="toDate"
-                                        value={formData.toDate}
-                                        onChange={(e) => setFormData({ ...formData, toDate: e.target.value })}
+                                        name="to"
+                                        value={formData.to}
+                                        onChange={(e) => setFormData({ ...formData, to: e.target.value })}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required
                                     />
@@ -272,7 +339,7 @@ function AdminExperiencePage() {
                             </div>
                             <button
                                 type="submit"
-                                className="text-white inline-flex items-center bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+                                className="text-white inline-flex items-center bg-secondary-gray hover:bg-primary-gold focus:ring-4 focus:outline-none focus:ring-primary-gold font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-secondary-gray dark:hover:bg-primary-gold dark:focus:ring-primary-gold"
                             >
                                 <FaPlus className="mr-2" />
                                 Add Experience
@@ -300,12 +367,12 @@ function AdminExperiencePage() {
                         <form onSubmit={handleEditSubmit}>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organization</label>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organization / Title</label>
                                     <input
                                         type="text"
-                                        name="organization"
-                                        value={formData.organization}
-                                        onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                                        name="title"
+                                        value={formData.title}
+                                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required
                                     />
@@ -325,9 +392,9 @@ function AdminExperiencePage() {
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">From Date</label>
                                     <input
                                         type="date"
-                                        name="fromDate"
-                                        value={formData.fromDate}
-                                        onChange={(e) => setFormData({ ...formData, fromDate: e.target.value })}
+                                        name="from"
+                                        value={formData.from}
+                                        onChange={(e) => setFormData({ ...formData, from: e.target.value })}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required
                                     />
@@ -336,9 +403,9 @@ function AdminExperiencePage() {
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">To Date</label>
                                     <input
                                         type="date"
-                                        name="toDate"
-                                        value={formData.toDate}
-                                        onChange={(e) => setFormData({ ...formData, toDate: e.target.value })}
+                                        name="to"
+                                        value={formData.to}
+                                        onChange={(e) => setFormData({ ...formData, to: e.target.value })}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required
                                     />
@@ -347,7 +414,7 @@ function AdminExperiencePage() {
                             <div className="flex items-center space-x-4">
                                 <button
                                     type="submit"
-                                    className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+                                    className="text-white bg-secondary-gray hover:bg-primary-gold focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
                                 >
                                     Update Experience
                                 </button>
@@ -363,7 +430,7 @@ function AdminExperiencePage() {
                     <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                         <div className="flex justify-between mb-4 rounded-t sm:mb-5">
                             <div className="text-lg text-gray-900 md:text-xl dark:text-white">
-                                <h3 className="font-semibold mb-3">{currentExperience?.organization}</h3>
+                                <h3 className="font-semibold mb-3">{currentExperience?.title}</h3>
                                 <p className="font-bold">{currentExperience?.position}</p>
                             </div>
                             <div>
@@ -380,7 +447,7 @@ function AdminExperiencePage() {
                         <dl>
                             <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Duration</dt>
                             <dd className="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                From: {currentExperience?.fromDate} To: {currentExperience?.toDate}
+                                From: {currentExperience?.from} To: {currentExperience?.to || "Present"}
                             </dd>
                         </dl>
                     </div>
@@ -403,7 +470,7 @@ function AdminExperiencePage() {
                             <FaTrash className="text-2xl text-red-600" />
                         </div>
                         <p className="mb-4 text-gray-500 dark:text-gray-300">
-                            Are you sure you want to delete the experience at <span className="font-semibold">{currentExperience?.organization}</span>?
+                            Are you sure you want to delete the experience at <span className="font-semibold">{currentExperience?.title}</span>?
                         </p>
                         <div className="flex justify-center items-center space-x-4">
                             <button

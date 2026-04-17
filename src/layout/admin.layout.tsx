@@ -3,15 +3,20 @@ import { useState } from "react";
 import { FaCode, FaEnvelope } from "react-icons/fa";
 import { FaCodeFork } from "react-icons/fa6";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { Link, Outlet } from "react-router";
+import { Link, useNavigate, Outlet } from "react-router";
 import { GiFireworkRocket } from "react-icons/gi";
 import { IoIosApps } from "react-icons/io";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdFindInPage } from "react-icons/md";
+
 function AdminLayout() {
-
+    const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+    const logout = () => {
+        localStorage.removeItem('access');
+        localStorage.removeItem('refresh');
+        navigate('/login')
+    };
     return (
         <>
 
@@ -78,16 +83,16 @@ function AdminLayout() {
                         <li>
                             <Link to="message" className="flex items-center gap-2 p-2 text-white rounded-lg dark:text-white hover:bg-gray-100 hover:bg-primary-gold">
                                 <FaEnvelope /> Messages
-                                <span className="ml-auto text-xs bg-red-400 text-white px-2 py-0.5 rounded-full ">
-                                    6
-                                </span>
                             </Link>
                         </li>
                     </ul>
 
                     {/* Logout */}
                     <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                        <Button className="w-full bg-primary-gold hover:bg-red-600">
+                        <Button onClick={() => {
+                            logout();
+                        }}
+                            className="w-full bg-primary-gold hover:bg-red-600">
                             Logout
                         </Button>
                     </div>

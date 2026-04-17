@@ -1,10 +1,13 @@
 import { FaEnvelope, FaEnvelopeOpen, FaReply, FaTrash } from "react-icons/fa";
 import { BiMessageCheck, BiMessageDetail } from "react-icons/bi";
 import { MdMarkEmailRead, MdMarkEmailUnread } from "react-icons/md";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import contactSvc from "../../services/contact.service";
 
 interface Message {
-    id: number;
+    message_id: number;
+    name: string;
     email: string;
     subject: string;
     message: string;
@@ -13,80 +16,110 @@ interface Message {
 }
 
 function AdminMessagePage() {
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            id: 1,
-            email: "sushantpaudyal@gmail.com",
-            subject: "Inquiry about service",
-            message: "Hello, I want to know more about your services. Could you please provide me with detailed information about pricing and availability?",
-            is_read: false,
-            created_at: "2024-01-15 10:30 AM"
-        },
-        {
-            id: 2,
-            email: "test@gmail.com",
-            subject: "Booking Issue",
-            message: "I am facing issues while booking futsal. The payment gateway keeps failing. Please help me resolve this issue.",
-            is_read: true,
-            created_at: "2024-01-14 03:45 PM"
-        },
-        {
-            id: 3,
-            email: "john.doe@example.com",
-            subject: "Partnership Opportunity",
-            message: "We are interested in partnering with your platform. Let's discuss potential collaboration opportunities.",
-            is_read: false,
-            created_at: "2024-01-16 09:15 AM"
-        }
-    ]);
-
+    const [messages, setMessages] = useState<Message[]>([]);
     const [filter, setFilter] = useState<"all" | "read" | "unread">("all");
     const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    const handleMarkAsRead = (id: number): void => {
-        setMessages(messages.map(msg =>
-            msg.id === id ? { ...msg, is_read: true } : msg
-        ));
+    // Fetch messages from API
+    const fetchMessages = async () => {
+        setLoading(true);
+        try {
+            const response = await contactSvc.listMessages();
+            console.log("Messages response:", response);
+
+            if (response?.data?.result) {
+                setMessages(response.data.result);
+            }
+        } catch (error: any) {
+            console.error("Error fetching messages:", error);
+            toast.error(error?.response?.data?.message || "Failed to load messages");
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleMarkAsUnread = (id: number): void => {
-        setMessages(messages.map(msg =>
-            msg.id === id ? { ...msg, is_read: false } : msg
-        ));
+    // Mark message as read
+    const handleMarkAsRead = async (id: number): Promise<void> => {
+        try {
+            const response = await contactSvc.updateMessageDetail(id, { is_read: true });
+            console.log("Mark as read response:", response);
+
+            toast.success("Message marked as read");
+            fetchMessages(); // Refresh the list
+        } catch (error: any) {
+            console.error("Error marking message as read:", error);
+            toast.error(error?.response?.data?.message || "Failed to mark message as read");
+        }
     };
 
-    const handleDelete = (id: number): void => {
+    // Mark message as unread
+    const handleMarkAsUnread = async (id: number): Promise<void> => {
+        try {
+            const response = await contactSvc.updateMessageDetail(id, { is_read: false });
+            console.log("Mark as unread response:", response);
+
+            toast.success("Message marked as unread");
+            fetchMessages(); // Refresh the list
+        } catch (error: any) {
+            console.error("Error marking message as unread:", error);
+            toast.error(error?.response?.data?.message || "Failed to mark message as unread");
+        }
+    };
+
+    // Delete message
+    const handleDelete = async (message_id: number): Promise<void> => {
         if (window.confirm("Are you sure you want to delete this message?")) {
-            setMessages(messages.filter(msg => msg.id !== id));
-            if (selectedMessage?.id === id) {
-                setIsModalOpen(false);
-                setSelectedMessage(null);
+            try {
+                const response = await contactSvc.deleteMessage(message_id);
+                console.log("Delete response:", response);
+
+                toast.success("Message deleted successfully");
+                if (selectedMessage?.message_id === message_id) {
+                    setIsModalOpen(false);
+                    setSelectedMessage(null);
+                }
+                fetchMessages(); // Refresh the list
+            } catch (error: any) {
+                console.error("Error deleting message:", error);
+                toast.error(error?.response?.data?.message || "Failed to delete message");
             }
         }
     };
 
-    const handleViewMessage = (message: Message): void => {
+    // View message details
+    const handleViewMessage = async (message: Message): Promise<void> => {
         setSelectedMessage(message);
         setIsModalOpen(true);
+
+        // Mark as read if not already read
         if (!message.is_read) {
-            handleMarkAsRead(message.id);
+            await handleMarkAsRead(message.message_id);
         }
     };
 
+    // Handle reply (opens email client)
     const handleReply = (email: string): void => {
         window.location.href = `mailto:${email}`;
     };
 
+    // Filter messages based on read/unread status
     const filteredMessages = messages.filter(msg => {
         if (filter === "read") return msg.is_read === true;
         if (filter === "unread") return msg.is_read === false;
         return true;
     });
 
+    // Get unread count
     const getUnreadCount = (): number => {
         return messages.filter(msg => !msg.is_read).length;
     };
+
+    // Load messages on component mount
+    useEffect(() => {
+        fetchMessages();
+    }, []);
 
     return (
         <>
@@ -175,101 +208,114 @@ function AdminMessagePage() {
 
                     {/* Messages List */}
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-                        <div className="divide-y divide-gray-200 dark:divide-gray-700">
-                            {filteredMessages.length === 0 ? (
-                                <div className="text-center py-12">
-                                    <FaEnvelope className="text-6xl text-gray-400 mx-auto mb-4" />
-                                    <p className="text-gray-500 dark:text-gray-400 text-lg">No messages found</p>
-                                    <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">
-                                        {filter === "unread" ? "All messages have been read" : filter === "read" ? "No read messages yet" : "No messages in inbox"}
-                                    </p>
-                                </div>
-                            ) : (
-                                filteredMessages.map((msg) => (
-                                    <div
-                                        key={msg.id}
-                                        className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer ${!msg.is_read ? "bg-blue-50 dark:bg-primary-gold/10" : ""
-                                            }`}
-                                        onClick={() => handleViewMessage(msg)}
-                                    >
-                                        <div className="flex items-start justify-between gap-4">
-                                            <div className="flex items-start gap-3 flex-1">
-                                                {/* Icon */}
-                                                <div className="flex-shrink-0">
-                                                    {!msg.is_read ? (
-                                                        <div className="w-10 h-10 rounded-full bg-gold-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                                            <FaEnvelope className="text-primary-gold-600 dark:text-primary-gold" />
-                                                        </div>
-                                                    ) : (
-                                                        <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                                                            <FaEnvelopeOpen className="text-gray-500 dark:text-gray-400" />
-                                                        </div>
-                                                    )}
-                                                </div>
-
-                                                {/* Content */}
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                                        <span className="font-semibold text-gray-900 dark:text-white">
-                                                            {msg.email}
-                                                        </span>
-                                                        {!msg.is_read && (
-                                                            <span className="px-2 py-0.5 text-xs bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 rounded-full">
-                                                                New
-                                                            </span>
+                        {loading ? (
+                            <div className="flex justify-center items-center py-12">
+                                <div className="loading loading-spinner loading-lg text-primary-gold"></div>
+                            </div>
+                        ) : (
+                            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+                                {filteredMessages.length === 0 ? (
+                                    <div className="text-center py-12">
+                                        <FaEnvelope className="text-6xl text-gray-400 mx-auto mb-4" />
+                                        <p className="text-gray-500 dark:text-gray-400 text-lg">No messages found</p>
+                                        <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">
+                                            {filter === "unread"
+                                                ? "All messages have been read"
+                                                : filter === "read"
+                                                    ? "No read messages yet"
+                                                    : "No messages in inbox"}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    filteredMessages.map((msg) => (
+                                        <div
+                                            key={msg.message_id}
+                                            className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer ${!msg.is_read ? "bg-blue-50 dark:bg-primary-gold/10" : ""
+                                                }`}
+                                            onClick={() => handleViewMessage(msg)}
+                                        >
+                                            <div className="flex items-start justify-between gap-4">
+                                                <div className="flex items-start gap-3 flex-1">
+                                                    {/* Icon */}
+                                                    <div className="flex-shrink-0">
+                                                        {!msg.is_read ? (
+                                                            <div className="w-10 h-10 rounded-full bg-gold-100 dark:bg-blue-900/30 flex items-center justify-center">
+                                                                <FaEnvelope className="text-primary-gold-600 dark:text-primary-gold" />
+                                                            </div>
+                                                        ) : (
+                                                            <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                                                                <FaEnvelopeOpen className="text-gray-500 dark:text-gray-400" />
+                                                            </div>
                                                         )}
-                                                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                                                            {msg.created_at}
-                                                        </span>
                                                     </div>
-                                                    <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
-                                                        {msg.subject}
-                                                    </h3>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                                                        {msg.message}
-                                                    </p>
-                                                </div>
-                                            </div>
 
-                                            {/* Action Buttons */}
-                                            <div className="flex items-center gap-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
-                                                {!msg.is_read ? (
+                                                    {/* Content */}
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                                            <span className="font-semibold text-gray-900 dark:text-white">
+                                                                {msg.email}
+                                                            </span>
+                                                            {!msg.is_read && (
+                                                                <span className="px-2 py-0.5 text-xs bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 rounded-full">
+                                                                    New
+                                                                </span>
+                                                            )}
+                                                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                                                                {msg.created_at}
+                                                            </span>
+                                                        </div>
+                                                        <h2 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
+                                                            {msg.name}
+                                                        </h2>
+                                                        <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
+                                                            {msg.subject}
+                                                        </h3>
+                                                        <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                                                            {msg.message}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Action Buttons */}
+                                                <div className="flex items-center gap-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                                                    {!msg.is_read ? (
+                                                        <button
+                                                            onClick={() => handleMarkAsRead(msg.message_id)}
+                                                            className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+                                                            title="Mark as read"
+                                                        >
+                                                            <BiMessageCheck size={18} />
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() => handleMarkAsUnread(msg.message_id)}
+                                                            className="p-2 text-yellow-600 hover:bg-yellow-100 dark:hover:bg-yellow-900/30 rounded-lg transition-colors"
+                                                            title="Mark as unread"
+                                                        >
+                                                            <MdMarkEmailUnread size={18} />
+                                                        </button>
+                                                    )}
                                                     <button
-                                                        onClick={() => handleMarkAsRead(msg.id)}
-                                                        className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
-                                                        title="Mark as read"
+                                                        onClick={() => handleReply(msg.email)}
+                                                        className="p-2 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-colors"
+                                                        title="Reply"
                                                     >
-                                                        <BiMessageCheck size={18} />
+                                                        <FaReply size={18} />
                                                     </button>
-                                                ) : (
                                                     <button
-                                                        onClick={() => handleMarkAsUnread(msg.id)}
-                                                        className="p-2 text-yellow-600 hover:bg-yellow-100 dark:hover:bg-yellow-900/30 rounded-lg transition-colors"
-                                                        title="Mark as unread"
+                                                        onClick={() => handleDelete(msg.message_id)}
+                                                        className="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                                                        title="Delete"
                                                     >
-                                                        <MdMarkEmailUnread size={18} />
+                                                        <FaTrash size={18} />
                                                     </button>
-                                                )}
-                                                <button
-                                                    onClick={() => handleReply(msg.email)}
-                                                    className="p-2 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-colors"
-                                                    title="Reply"
-                                                >
-                                                    <FaReply size={18} />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(msg.id)}
-                                                    className="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors"
-                                                    title="Delete"
-                                                >
-                                                    <FaTrash size={18} />
-                                                </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))
-                            )}
-                        </div>
+                                    ))
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -285,6 +331,9 @@ function AdminMessagePage() {
                                         <BiMessageDetail className="text-2xl text-blue-600 dark:text-blue-400" />
                                     </div>
                                     <div>
+                                        <h2 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
+                                            {selectedMessage.name}
+                                        </h2>
                                         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                                             {selectedMessage.subject}
                                         </h3>
@@ -325,7 +374,7 @@ function AdminMessagePage() {
                                 </button>
                                 <button
                                     onClick={() => {
-                                        handleDelete(selectedMessage.id);
+                                        handleDelete(selectedMessage.message_id);
                                         setIsModalOpen(false);
                                     }}
                                     className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors flex items-center gap-2"

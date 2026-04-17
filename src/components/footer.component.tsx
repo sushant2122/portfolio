@@ -1,88 +1,165 @@
 import { motion } from "framer-motion";
-import { FaCode, FaDiscord, FaEnvelope, FaFacebook, FaGithub, FaPhone, FaTwitter } from "react-icons/fa"
+import {
+    FaCode,
+    FaDiscord,
+    FaEnvelope,
+    FaFacebook,
+    FaGithub,
+    FaPhone,
+    FaTwitter,
+} from "react-icons/fa";
 import { IoIosPaper } from "react-icons/io";
 import { RiFilePaperFill } from "react-icons/ri";
 
+const socialLinks = [
+    { icon: FaGithub, href: "#", label: "GitHub" },
+    { icon: FaTwitter, href: "#", label: "Twitter" },
+    { icon: FaDiscord, href: "#", label: "Discord" },
+    { icon: FaFacebook, href: "#", label: "Facebook" },
+];
+
+const legalLinks = [
+    { icon: RiFilePaperFill, label: "Privacy Policy", href: "#" },
+    { icon: IoIosPaper, label: "Terms & Conditions", href: "#" },
+];
+
 function FooterComponent() {
     return (
-        <>
+        <footer className="relative overflow-hidden bg-[#141d2b] dark:bg-[#0f1520]">
+            {/* Decorative top border */}
+            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-primary-gold/60 to-transparent" />
 
+            {/* Background grid pattern */}
+            <div
+                className="absolute inset-0 opacity-[0.03]"
+                style={{
+                    backgroundImage: `linear-gradient(rgba(211,175,55,1) 1px, transparent 1px), linear-gradient(90deg, rgba(211,175,55,1) 1px, transparent 1px)`,
+                    backgroundSize: "60px 60px",
+                }}
+            />
 
-            <footer className="dark:bg-gray-800 pt-10 ">
-                <motion.div
-                    initial={{ opacity: 0, x: 100 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 1 }}
-                    viewport={{ once: true }}
-                    className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-                    <div className="md:flex md:justify-between">
-                        <div className="  mb-6 md:mb-0 w-80">
-                            <a href="#" className="flex gap-2 items-center dark:text-white">
-                                <FaCode size={25} />
-                                <span className=" self-center text-xl text-primary-black font-semibold whitespace-nowrap dark:text-primary-gold">Sushant Paudyal</span>
-                            </a>
-                            <p className="pt-8 text-l text-primary-black font-semibold dark:text-white "> “Turning ideas into reality through clean code and creative design.”</p>
+            {/* Radial gold glow */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-primary-gold/5 rounded-full blur-3xl pointer-events-none" />
 
-                        </div>
-                        <div className="grid grid-cols-1 gap-8 sm:gap-8 sm:grid-cols-2 dark:text-gray-400">
-                            <div>
-                                <h2 className="mb-6 text-sm font-semibold text-heading uppercase">Contact Info</h2>
-                                <ul className="text-body font-medium">
-                                    <li className="mb-4">
-                                        <a href="https://flowbite.com/" className=" flex gap-2 items-center dark:hover:text-white hover:text-primary-gold"> <FaEnvelope size={15} /> sushantpaudyal@gmail.com </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://tailwindcss.com/" className=" flex gap-2 items-center dark:hover:text-white hover:text-primary-gold"><FaPhone size={15} />+977 9861200112</a>
-                                    </li>
-                                </ul>
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true }}
+                className="relative mx-auto w-full max-w-screen-xl px-6 lg:px-10 pt-14 pb-8"
+            >
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                    {/* Brand Column */}
+                    <div className="md:col-span-1">
+                        <a href="#" className="flex gap-3 items-center mb-6 group w-fit">
+                            <div className="relative w-8 h-8 flex items-center justify-center shrink-0">
+                                <div className="absolute inset-0 border border-primary-gold/40 rotate-45 group-hover:rotate-[135deg] transition-transform duration-500" />
+                                <FaCode size={14} className="text-primary-gold relative z-10" />
                             </div>
-
-                            <div>
-                                <h2 className="mb-6 text-sm font-semibold text-heading uppercase">Legal</h2>
-                                <ul className="text-body font-medium">
-                                    <li className="mb-4">
-                                        <a href="#" className=" flex gap-2 items-center dark:hover:text-white hover:text-primary-gold">
-                                            < RiFilePaperFill size={15} />
-                                            Privacy Policy</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" className=" flex gap-2 items-center dark:hover:text-white hover:text-primary-gold">
-                                            <IoIosPaper size={15} />
-                                            Terms &amp; Conditions</a>
-                                    </li>
-                                </ul>
+                            <div className="flex flex-col leading-none">
+                                <span className="text-[10px] tracking-[0.25em] uppercase text-primary-gold font-medium">
+                                    Portfolio
+                                </span>
+                                <span className="text-[15px] font-bold tracking-tight text-white">
+                                    Sushant Paudyal
+                                </span>
                             </div>
+                        </a>
+
+                        <p className="text-[13px] leading-relaxed text-gray-400 max-w-xs mb-8 border-l-2 border-primary-gold/40 pl-4 italic">
+                            "Turning ideas into reality through clean code and creative design."
+                        </p>
+
+                        {/* Social Icons */}
+                        <div className="flex gap-3">
+                            {socialLinks.map(({ icon: Icon, href, label }) => (
+                                <motion.a
+                                    key={label}
+                                    href={href}
+                                    whileHover={{ y: -3, scale: 1.1 }}
+                                    transition={{ duration: 0.2 }}
+                                    aria-label={label}
+                                    className="w-9 h-9 flex items-center justify-center border border-gray-700 hover:border-primary-gold/60 text-gray-500 hover:text-primary-gold bg-white/[0.03] hover:bg-primary-gold/10 transition-all duration-200"
+                                >
+                                    <Icon size={15} />
+                                </motion.a>
+                            ))}
                         </div>
                     </div>
-                    <hr className="my-6 border-default sm:mx-auto lg:my-8" />
-                    <div className="sm:flex sm:items-center sm:justify-between dark:text-white">
-                        <span className="text-sm text-body sm:text-center">© 2026 <a href="https://flowbite.com/" className="hover:underline">Sushant paudyal</a>. All Rights Reserved.
+
+                    {/* Contact Column */}
+                    <div>
+                        <h3 className="mb-6 text-[11px] font-semibold tracking-[0.2em] uppercase text-primary-gold">
+                            Contact
+                        </h3>
+                        <ul className="space-y-4">
+                            <li>
+                                <a
+                                    href="mailto:sushantpaudyal@gmail.com"
+                                    className="flex items-center gap-3 text-[13px] text-gray-400 hover:text-white transition-colors duration-200 group"
+                                >
+                                    <span className="w-7 h-7 flex items-center justify-center border border-gray-700 group-hover:border-primary-gold/50 group-hover:text-primary-gold transition-all duration-200 shrink-0">
+                                        <FaEnvelope size={11} />
+                                    </span>
+                                    sushantpaudyal@gmail.com
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="tel:+9779861200112"
+                                    className="flex items-center gap-3 text-[13px] text-gray-400 hover:text-white transition-colors duration-200 group"
+                                >
+                                    <span className="w-7 h-7 flex items-center justify-center border border-gray-700 group-hover:border-primary-gold/50 group-hover:text-primary-gold transition-all duration-200 shrink-0">
+                                        <FaPhone size={11} />
+                                    </span>
+                                    +977 9861200112
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Legal Column */}
+                    <div>
+                        <h3 className="mb-6 text-[11px] font-semibold tracking-[0.2em] uppercase text-primary-gold">
+                            Legal
+                        </h3>
+                        <ul className="space-y-4">
+                            {legalLinks.map(({ icon: Icon, label, href }) => (
+                                <li key={label}>
+                                    <a
+                                        href={href}
+                                        className="flex items-center gap-3 text-[13px] text-gray-400 hover:text-white transition-colors duration-200 group"
+                                    >
+                                        <span className="w-7 h-7 flex items-center justify-center border border-gray-700 group-hover:border-primary-gold/50 group-hover:text-primary-gold transition-all duration-200 shrink-0">
+                                            <Icon size={11} />
+                                        </span>
+                                        {label}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Bottom bar */}
+                <div className="pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <span className="text-[12px] text-gray-500">
+                        © 2026{" "}
+                        <a href="#" className="text-gray-400 hover:text-primary-gold transition-colors duration-200">
+                            Sushant Paudyal
+                        </a>
+                        . All Rights Reserved.
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        <span className="text-[11px] text-gray-500 tracking-wide">
+                            Available for freelance
                         </span>
-                        <div className="flex mt-4 sm:justify-center sm:mt-0 ">
-                            <a href="#" className="text-body hover:text-heading hover:text-primary-gold">
-                                <FaFacebook size={20} />
-                                <span className="sr-only">Facebook page</span>
-                            </a>
-                            <a href="#" className="text-body hover:text-heading ms-5 hover:text-primary-gold">
-                                <FaDiscord size={20} />
-                                <span className="sr-only">Discord community</span>
-                            </a>
-                            <a href="#" className="text-body hover:text-heading ms-5 hover:text-primary-gold">
-
-                                <FaTwitter size={20} />
-                                <span className="sr-only">Twitter page</span>
-                            </a>
-                            <a href="#" className="text-body hover:text-heading ms-5 hover:text-primary-gold">
-                                <FaGithub size={20} />
-                                <span className="sr-only">GitHub account</span>
-                            </a>
-                        </div>
                     </div>
-                </motion.div>
-            </footer>
-
-        </>
-    )
+                </div>
+            </motion.div>
+        </footer>
+    );
 }
 
-export default FooterComponent
+export default FooterComponent;
