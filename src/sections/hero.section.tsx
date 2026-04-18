@@ -104,9 +104,7 @@ function HeroSection() {
                     >
                         {/* Primary CTA */}
                         <a
-                            href="/resume.pdf"
-                            download={resume}
-                            onClick={onDownload}
+                            href={resume} download="Sushant_Paudyal_CV.pdf" onClick={onDownload}
                             className="group inline-flex items-center gap-2.5 bg-primary-gold hover:bg-[#c4a030] text-primary-black font-semibold text-[14px] tracking-wide px-6 py-3.5 transition-all duration-200 shadow-[0_0_0_0_rgba(211,175,55,0.4)] hover:shadow-[0_0_20px_4px_rgba(211,175,55,0.25)]"
                         >
                             <FaDownload size={13} />
