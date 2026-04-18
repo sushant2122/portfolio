@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FaEnvelope, FaPhone, FaLocationDot } from "react-icons/fa6";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { toast } from "react-toastify";
+import contactSvc from "../services/contact.service";
 
 const contactInfo = [
     {
@@ -30,8 +31,10 @@ const socialLinks = [
     { icon: FaLinkedin, href: "#", label: "LinkedIn" },
 ];
 
+const EMPTY_FORM = { name: "", email: "", subject: "", message: "" };
+
 function ContactSection() {
-    const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+    const [form, setForm] = useState(EMPTY_FORM);
     const [sending, setSending] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -40,16 +43,37 @@ function ContactSection() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!form.name || !form.email || !form.message) {
+
+        if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
             toast.error("Please fill in all required fields.");
             return;
         }
-        setSending(true);
-        // Replace with your actual send logic
-        await new Promise((r) => setTimeout(r, 1200));
-        setSending(false);
-        toast.success("Message sent! I'll get back to you soon.");
-        setForm({ name: "", email: "", subject: "", message: "" });
+
+        try {
+            setSending(true);
+            const response = await contactSvc.createMessage({
+                name: form.name.trim(),
+                email: form.email.trim(),
+                subject: form.subject.trim(),
+                message: form.message.trim(),
+            });
+
+            // API returns { result: {...}, message: "...", status: "MESSAGE_CREATION_SUCCESS" }
+            if (response?.data?.status === "MESSAGE_CREATION_SUCCESS") {
+                toast.success(response.data.message || "Message sent! I'll get back to you soon.");
+                setForm(EMPTY_FORM);
+            } else {
+                toast.error("Something went wrong. Please try again.");
+            }
+        } catch (err: any) {
+            const errMsg =
+                err?.response?.data?.message ||
+                err?.message ||
+                "Failed to send message. Please try again.";
+            toast.error(errMsg);
+        } finally {
+            setSending(false);
+        }
     };
 
     return (
@@ -99,12 +123,10 @@ function ContactSection() {
                         viewport={{ once: true }}
                         className="lg:col-span-2 flex flex-col gap-8"
                     >
-                        <div>
-                            <p className="text-[14px] leading-relaxed text-gray-500 dark:text-gray-400">
-                                I'm currently open to new opportunities. Whether you have a project in mind,
-                                a question, or just want to connect — my inbox is always open.
-                            </p>
-                        </div>
+                        <p className="text-[14px] leading-relaxed text-gray-500 dark:text-gray-400">
+                            I'm currently open to new opportunities. Whether you have a project in mind,
+                            a question, or just want to connect — my inbox is always open.
+                        </p>
 
                         {/* Contact info cards */}
                         <div className="flex flex-col gap-3">
@@ -183,7 +205,8 @@ function ContactSection() {
                                             value={form.name}
                                             onChange={handleChange}
                                             placeholder="Your full name"
-                                            className="w-full bg-white dark:bg-white/[0.04] border border-gray-200 dark:border-gray-700/60 focus:border-primary-gold focus:ring-0 outline-none px-4 py-3 text-[13px] text-primary-black dark:text-white placeholder:text-gray-400 transition-colors duration-200"
+                                            disabled={sending}
+                                            className="w-full bg-white dark:bg-white/[0.04] border border-gray-200 dark:border-gray-700/60 focus:border-primary-gold focus:ring-0 outline-none px-4 py-3 text-[13px] text-primary-black dark:text-white placeholder:text-gray-400 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                         />
                                     </div>
                                     {/* Email */}
@@ -197,7 +220,8 @@ function ContactSection() {
                                             value={form.email}
                                             onChange={handleChange}
                                             placeholder="your@email.com"
-                                            className="w-full bg-white dark:bg-white/[0.04] border border-gray-200 dark:border-gray-700/60 focus:border-primary-gold focus:ring-0 outline-none px-4 py-3 text-[13px] text-primary-black dark:text-white placeholder:text-gray-400 transition-colors duration-200"
+                                            disabled={sending}
+                                            className="w-full bg-white dark:bg-white/[0.04] border border-gray-200 dark:border-gray-700/60 focus:border-primary-gold focus:ring-0 outline-none px-4 py-3 text-[13px] text-primary-black dark:text-white placeholder:text-gray-400 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                         />
                                     </div>
                                 </div>
@@ -213,7 +237,8 @@ function ContactSection() {
                                         value={form.subject}
                                         onChange={handleChange}
                                         placeholder="What's this about?"
-                                        className="w-full bg-white dark:bg-white/[0.04] border border-gray-200 dark:border-gray-700/60 focus:border-primary-gold focus:ring-0 outline-none px-4 py-3 text-[13px] text-primary-black dark:text-white placeholder:text-gray-400 transition-colors duration-200"
+                                        disabled={sending}
+                                        className="w-full bg-white dark:bg-white/[0.04] border border-gray-200 dark:border-gray-700/60 focus:border-primary-gold focus:ring-0 outline-none px-4 py-3 text-[13px] text-primary-black dark:text-white placeholder:text-gray-400 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                     />
                                 </div>
 
@@ -228,14 +253,15 @@ function ContactSection() {
                                         onChange={handleChange}
                                         rows={5}
                                         placeholder="Tell me about your project or inquiry..."
-                                        className="w-full resize-none bg-white dark:bg-white/[0.04] border border-gray-200 dark:border-gray-700/60 focus:border-primary-gold focus:ring-0 outline-none px-4 py-3 text-[13px] text-primary-black dark:text-white placeholder:text-gray-400 transition-colors duration-200"
+                                        disabled={sending}
+                                        className="w-full resize-none bg-white dark:bg-white/[0.04] border border-gray-200 dark:border-gray-700/60 focus:border-primary-gold focus:ring-0 outline-none px-4 py-3 text-[13px] text-primary-black dark:text-white placeholder:text-gray-400 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                     />
                                 </div>
 
                                 <button
                                     type="submit"
                                     disabled={sending}
-                                    className="w-full flex items-center justify-center gap-2.5 bg-primary-gold hover:bg-[#c4a030] disabled:opacity-60 text-primary-black font-semibold text-[13px] tracking-wide py-3.5 transition-all duration-200 shadow-[0_0_0_0_rgba(211,175,55,0.4)] hover:shadow-[0_0_20px_2px_rgba(211,175,55,0.2)]"
+                                    className="w-full flex items-center justify-center gap-2.5 bg-primary-gold hover:bg-[#c4a030] disabled:opacity-60 disabled:cursor-not-allowed text-primary-black font-semibold text-[13px] tracking-wide py-3.5 transition-all duration-200 shadow-[0_0_0_0_rgba(211,175,55,0.4)] hover:shadow-[0_0_20px_2px_rgba(211,175,55,0.2)]"
                                 >
                                     {sending ? (
                                         <>
