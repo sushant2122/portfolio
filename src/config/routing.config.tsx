@@ -14,6 +14,8 @@ import AdminMessagePage from '../pages/admin/admin.message.page'
 import { AuthProvider } from '../context/auth.context'
 import PermissionChecker from './permission.config'
 import HomePage from '../pages/home.page'
+import PrivacyPolicyPage from '../pages/privacypolicy.page'
+import TermsPage from '../pages/terms&condition.page'
 
 function RoutingConfig() {
     return (
@@ -34,6 +36,8 @@ function RoutingConfig() {
                         <Route path='*' element={<ErrorPage />} />
                         <Route path='/login' element={<LoginPage />} />
                         <Route path='/reset' element={<EmailResetPage />} />
+                        <Route path='privacy-policy' element={<PrivacyPolicyPage />} />
+                        <Route path='term' element={<TermsPage />} />
                         <Route path='/reset-password/:token' element={<PasswordResetPage />} />
 
                         <Route path='/admin' element={<PermissionChecker allowedBy="Admin">

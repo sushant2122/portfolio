@@ -132,8 +132,8 @@ function HeroSection() {
                         className="flex gap-8 mt-14 pt-8 border-t border-gray-100 dark:border-gray-700/50"
                     >
                         {[
-                            { value: "2+", label: "Years Experience" },
-                            { value: "15+", label: "Projects Built" },
+                            { value: "1+", label: "Years Experience" },
+                            { value: "5+", label: "Projects Built" },
                             { value: "1st", label: "Class Honours" },
                         ].map(({ value, label }) => (
                             <div key={label}>

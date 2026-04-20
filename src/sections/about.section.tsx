@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
 import abtimg from "../assets/abt.gif";
-import { FaDiscord, FaGithub, FaFacebook, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaFacebook, FaLinkedin } from "react-icons/fa";
 
 const socialLinks = [
-    { icon: FaGithub, href: "#", label: "GitHub" },
-    { icon: FaLinkedin, href: "#", label: "LinkedIn" },
-    { icon: FaFacebook, href: "#", label: "Facebook" },
-    { icon: FaDiscord, href: "#", label: "Discord" },
+    { icon: FaGithub, href: "https://github.com/sushant2122", label: "GitHub" },
+    { icon: FaLinkedin, href: "https://www.linkedin.com/in/sushant-paudyal-a25aa5268/", label: "LinkedIn" },
+    { icon: FaFacebook, href: "https://www.facebook.com/share/18ZTyoRyoL/?mibextid=wwXIfr", label: "Facebook" }
 ];
 
 const highlights = [
@@ -92,7 +91,7 @@ function AboutSection() {
                                 transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
                                 className="absolute -bottom-4 -right-4 z-20 bg-primary-gold px-4 py-3 shadow-lg"
                             >
-                                <p className="text-[22px] font-extrabold text-primary-black leading-none">2+</p>
+                                <p className="text-[22px] font-extrabold text-primary-black leading-none">1+</p>
                                 <p className="text-[10px] font-semibold text-primary-black/70 uppercase tracking-widest mt-0.5">
                                     Yrs Exp.
                                 </p>

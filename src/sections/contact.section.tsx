@@ -27,8 +27,8 @@ const contactInfo = [
 ];
 
 const socialLinks = [
-    { icon: FaGithub, href: "#", label: "GitHub" },
-    { icon: FaLinkedin, href: "#", label: "LinkedIn" },
+    { icon: FaGithub, href: "https://github.com/sushant2122", label: "GitHub" },
+    { icon: FaLinkedin, href: "https://www.linkedin.com/in/sushant-paudyal-a25aa5268/", label: "LinkedIn" },
 ];
 
 const EMPTY_FORM = { name: "", email: "", subject: "", message: "" };

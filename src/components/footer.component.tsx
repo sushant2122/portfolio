@@ -1,26 +1,24 @@
 import { motion } from "framer-motion";
 import {
     FaCode,
-    FaDiscord,
     FaEnvelope,
     FaFacebook,
     FaGithub,
+    FaLinkedin,
     FaPhone,
-    FaTwitter,
 } from "react-icons/fa";
 import { IoIosPaper } from "react-icons/io";
 import { RiFilePaperFill } from "react-icons/ri";
-
+import { Link } from "react-router";
 const socialLinks = [
-    { icon: FaGithub, href: "#", label: "GitHub" },
-    { icon: FaTwitter, href: "#", label: "Twitter" },
-    { icon: FaDiscord, href: "#", label: "Discord" },
-    { icon: FaFacebook, href: "#", label: "Facebook" },
+    { icon: FaGithub, href: "https://github.com/sushant2122", label: "GitHub" },
+    { icon: FaLinkedin, href: "https://www.linkedin.com/in/sushant-paudyal-a25aa5268/", label: "LinkedIn" },
+    { icon: FaFacebook, href: "https://www.facebook.com/share/18ZTyoRyoL/?mibextid=wwXIfr", label: "Facebook" }
 ];
 
 const legalLinks = [
-    { icon: RiFilePaperFill, label: "Privacy Policy", href: "#" },
-    { icon: IoIosPaper, label: "Terms & Conditions", href: "#" },
+    { icon: RiFilePaperFill, label: "Privacy Policy", to: 'privacy-policy' },
+    { icon: IoIosPaper, label: "Terms & Conditions", to: 'term' },
 ];
 
 function FooterComponent() {
@@ -124,17 +122,17 @@ function FooterComponent() {
                             Legal
                         </h3>
                         <ul className="space-y-4">
-                            {legalLinks.map(({ icon: Icon, label, href }) => (
+                            {legalLinks.map(({ icon: Icon, label, to }) => (
                                 <li key={label}>
-                                    <a
-                                        href={href}
+                                    <Link
+                                        to={to}
                                         className="flex items-center gap-3 text-[13px] text-gray-400 hover:text-white transition-colors duration-200 group"
                                     >
                                         <span className="w-7 h-7 flex items-center justify-center border border-gray-700 group-hover:border-primary-gold/50 group-hover:text-primary-gold transition-all duration-200 shrink-0">
                                             <Icon size={11} />
                                         </span>
                                         {label}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
