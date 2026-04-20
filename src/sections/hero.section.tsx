@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { FaDownload } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
 import herophoto from "../assets/hero.png";
-import resume from "../../public/Sushant_ALL_CV.pdf";
+import resume from "/Sushant_ALL_CV.pdf";
 import { toast } from "react-toastify";
 
 const STAGGER = 0.12;
