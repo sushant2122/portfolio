@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import abtimg from "../assets/abt.gif";
+import abtimg from "../assets/hero.png";
 import { FaGithub, FaFacebook, FaLinkedin } from "react-icons/fa";
 
 const socialLinks = [
@@ -68,10 +68,10 @@ function AboutSection() {
 
                             {/* Corner marks */}
                             {[
-                                "top-5 left-6 border-t-2 border-l-2",
-                                "top-5 right-0 border-t-2 border-r-2",
-                                "bottom-0 left-6 border-b-2 border-l-2",
-                                "bottom-0 right-6 border-b-2 border-r-2",
+                                "top-0 left-0 border-t-2 border-l-2",
+                                "top-0 right-0 border-t-2 border-r-2",
+                                "bottom-0 left-0 border-b-2 border-l-2",
+                                "bottom-0 right-0 border-b-2 border-r-2",
                             ].map((cls, i) => (
                                 <div
                                     key={i}
