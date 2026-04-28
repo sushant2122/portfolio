@@ -23,7 +23,7 @@ function AdminLayout() {
 
             {/* Sidebar */}
             <aside
-                className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform translate-x-0 -translate-x-full"
+                className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform  -translate-x-0"
 
             >
                 <div className="flex flex-col justify-between h-full bg-gray-600 border-r border-gray-200 dark:bg-white dark:border-gray-700">
@@ -35,11 +35,11 @@ function AdminLayout() {
                         <li className="pb-4">
                             <Link to="/admin" className="flex gap-2 items-center text-white">
                                 <FaCode size={25} />
-                                <span className=" self-center text-xl text-primary-black font-semibold whitespace-nowrap text-primary-gold">Sushant Paudyal</span>
+                                <span className=" self-center text-xl text-white font-semibold whitespace-nowrap ">Sushant Paudyal</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to="/admin" className="flex flex-wrap gap-2 items-center p-2 text-gray-900 rounded-lg text-white hover:bg-gray-100 hover:bg-primary-gold">
+                            <Link to="/admin" className="flex flex-wrap gap-2 items-center p-2 text-white rounded-lg   hover:bg-primary-gold">
                                 <LuLayoutDashboard />  Overview
                             </Link>
                         </li>
@@ -48,7 +48,7 @@ function AdminLayout() {
                         <li>
                             <button
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                className="flex items-center w-full p-2 text-gray-900 rounded-lg text-white hover:bg-gray-100 hover:bg-primary-gold justify-between"
+                                className="flex items-center w-full p-2 text-white rounded-lg hover:bg-primary-gold justify-between"
                             >
                                 <span className="flex flex-wrap items-center gap-2">
                                     <MdFindInPage /> Pages
@@ -62,22 +62,22 @@ function AdminLayout() {
                             {isDropdownOpen && (
                                 <ul className="pl-6 mt-2 space-y-2 text-white">
                                     <li>
-                                        <Link to="project" className="flex flex-wrap gap-2 items-center block p-2 rounded hover:bg-gray-100 hover:bg-primary-gold">
+                                        <Link to="project" className="flex flex-wrap gap-2 items-center  p-2 rounded  hover:bg-primary-gold">
                                             <FaCodeFork /> Projects
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="experience" className=" flex flex-wrap gap-2 items-center block p-2 rounded hover:bg-gray-100 hover:bg-primary-gold">
+                                        <Link to="experience" className=" flex flex-wrap gap-2 items-center  p-2 rounded  hover:bg-primary-gold">
                                             <GiFireworkRocket /> Experiences
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="skill" className=" flex flex-wrap gap-2 items-center block p-2 rounded hover:bg-gray-100 hover:bg-primary-gold">
+                                        <Link to="skill" className=" flex flex-wrap gap-2 items-center  p-2 rounded  hover:bg-primary-gold">
                                             <IoIosApps /> Skills
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="cert" className=" flex flex-wrap gap-2 items-center block p-2 rounded hover:bg-gray-100 hover:bg-primary-gold">
+                                        <Link to="cert" className=" flex flex-wrap gap-2 items-center  p-2 rounded  hover:bg-primary-gold">
                                             <GrCertificate /> Certifications
                                         </Link>
                                     </li>
@@ -86,7 +86,7 @@ function AdminLayout() {
                         </li>
 
                         <li>
-                            <Link to="message" className="flex items-center gap-2 p-2 text-white rounded-lg dark:text-white hover:bg-gray-100 hover:bg-primary-gold">
+                            <Link to="message" className="flex items-center gap-2 p-2 text-white rounded-lg dark:text-white  hover:bg-primary-gold">
                                 <FaEnvelope /> Messages
                             </Link>
                         </li>
