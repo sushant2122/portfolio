@@ -369,7 +369,7 @@ function AdminSkillPage() {
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => handleDeleteClick(skill)}
-                                                                    className="flex items-center p-2 items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-600 text-red-500 dark:hover:text-red-400 rounded"
+                                                                    className="flex  p-2 items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-600 text-red-500 dark:hover:text-red-400 rounded"
                                                                 >
                                                                     <FaTrash />
                                                                 </button>

@@ -8,7 +8,7 @@ import { GiFireworkRocket } from "react-icons/gi";
 import { IoIosApps } from "react-icons/io";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdFindInPage } from "react-icons/md";
-
+import { GrCertificate } from "react-icons/gr";
 function AdminLayout() {
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -74,6 +74,11 @@ function AdminLayout() {
                                     <li>
                                         <Link to="skill" className=" flex flex-wrap gap-2 items-center block p-2 rounded hover:bg-gray-100 hover:bg-primary-gold">
                                             <IoIosApps /> Skills
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="cert" className=" flex flex-wrap gap-2 items-center block p-2 rounded hover:bg-gray-100 hover:bg-primary-gold">
+                                            <GrCertificate /> Certifications
                                         </Link>
                                     </li>
                                 </ul>

@@ -10,6 +10,7 @@ const navLinks = [
     { label: "Skills", href: "#skill" },
     { label: "Projects", href: "#project" },
     { label: "Experience", href: "#experience" },
+    { label: "Certification", href: "#certification" },
 ];
 
 function NavbarComponent() {

@@ -16,6 +16,7 @@ import PermissionChecker from './permission.config'
 import HomePage from '../pages/home.page'
 import PrivacyPolicyPage from '../pages/privacypolicy.page'
 import TermsPage from '../pages/terms&condition.page'
+import AdminCertificationPage from '../pages/admin/admin.cert.page'
 
 function RoutingConfig() {
     return (
@@ -48,6 +49,7 @@ function RoutingConfig() {
                             <Route path="skill" element={<AdminSkillPage />}></Route>
                             <Route path="experience" element={<AdminExperiencePage />}></Route>
                             <Route path="message" element={<AdminMessagePage />}></Route>
+                            <Route path="cert" element={< AdminCertificationPage />}></Route >
 
                         </Route>
 

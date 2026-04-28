@@ -1,4 +1,5 @@
 import AboutSection from "../sections/about.section"
+import CertificationSection from "../sections/cert.section"
 import ContactSection from "../sections/contact.section"
 import ExperienceSection from "../sections/experience.section"
 import HeroSection from "../sections/hero.section"
@@ -12,9 +13,8 @@ function HomePage() {
             <AboutSection />
             <SkillSection />
             <ProjectSection />
-
             <ExperienceSection />
-
+            <CertificationSection />
             <ContactSection />
 
         </>
