@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import abtimg from "../assets/hero.png";
+import abtimg from "../assets/prof.jpg";
 import { FaGithub, FaFacebook, FaLinkedin } from "react-icons/fa";
 
 const socialLinks = [
