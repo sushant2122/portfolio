@@ -12,7 +12,7 @@ interface Project {
     live_URL: string;
 }
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectCard({ project }: { project: Project; index: number }) {
     const hasLive = project.live_URL && project.live_URL !== "undefined";
 
     return (
