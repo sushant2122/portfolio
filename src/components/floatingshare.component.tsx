@@ -2,14 +2,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    FacebookShareButton,
+
     TwitterShareButton,
+    FacebookMessengerShareButton,
     LinkedinShareButton,
     WhatsappShareButton,
     TelegramShareButton,
 
     EmailShareButton,
-    FacebookIcon,
+    FacebookMessengerIcon,
     TwitterIcon,
     LinkedinIcon,
     WhatsappIcon,
@@ -43,9 +44,9 @@ export const FloatingShareButton: React.FC = () => {
                         exit={{ opacity: 0, y: 20 }}
                         className="absolute bottom-full right-0 mb-4 flex flex-col gap-3"
                     >
-                        <FacebookShareButton url={shareUrl} title={title}>
-                            <FacebookIcon size={48} round />
-                        </FacebookShareButton>
+                        <FacebookMessengerShareButton url={shareUrl} appId={import.meta.env.VITE_FB_APP_ID}>
+                            <FacebookMessengerIcon size={48} round />
+                        </FacebookMessengerShareButton>
 
                         <TwitterShareButton url={shareUrl} title={title}>
                             <TwitterIcon size={48} round />
