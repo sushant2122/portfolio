@@ -1,7 +1,7 @@
 import { DarkThemeToggle } from "flowbite-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { FaCode, FaHandshake } from "react-icons/fa";
+import { FaHandshake } from "react-icons/fa";
 import { Link } from "react-router";
 import lightLogo from "../assets/code.svg"
 import darkLogo from "../assets/foot.svg"

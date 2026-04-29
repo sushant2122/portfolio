@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import {
-    FaCode,
+
     FaEnvelope,
     FaFacebook,
     FaGithub,
