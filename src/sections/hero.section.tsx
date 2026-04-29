@@ -58,7 +58,7 @@ function HeroSection() {
                         initial={{ opacity: 0, y: 28 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.75, delay: STAGGER * 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="max-w-xl mb-6 text-[2.6rem] md:text-5xl xl:text-[3.5rem] font-extrabold tracking-tight leading-[1.1] text-primary-black dark:text-white"
+                        className="  font-vibes max-w-xl mb-6 text-[2.6rem] md:text-5xl xl:text-[3.5rem] font-extrabold tracking-tight leading-[1.1] text-primary-black dark:text-white"
                     >
                         Turning Ideas into{" "}
                         <span className="relative inline-block">
@@ -88,7 +88,7 @@ function HeroSection() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: STAGGER * 2 }}
-                        className="max-w-lg mb-10 text-[15px] leading-relaxed text-gray-500 dark:text-gray-400"
+                        className=" max-w-lg mb-10 text-[15px] leading-relaxed text-gray-500 dark:text-gray-400"
                     >
                         I build modern, responsive web applications using React and
                         Tailwind CSS — with a relentless focus on clean UI and

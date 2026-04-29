@@ -256,7 +256,7 @@ function CertificationSection() {
     useEffect(() => { loadCerts(); }, []);
 
     return (
-        <section id="certification" className="relative overflow-hidden bg-white dark:bg-[#17202f] py-24 px-6">
+        <section id="certification" className="relative overflow-hidden bg-gray-50 dark:bg-[#17202f] py-24 px-6">
             {/* Background accents — mirrors SkillSection */}
             <div className="pointer-events-none absolute top-0 right-0 w-[500px] h-[500px] bg-primary-gold/[0.03] rounded-full blur-3xl translate-x-1/3 -translate-y-1/3" />
             <div className="pointer-events-none absolute bottom-0 left-0 w-[300px] h-[300px] bg-primary-gold/[0.025] rounded-full blur-3xl" />

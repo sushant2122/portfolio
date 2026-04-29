@@ -9,3 +9,13 @@
 @plugin "flowbite/plugin";
 @plugin "daisyui";
 @source "../node_modules/flowbite";
+
+.mozilla-text-sus {
+  font-family: "Mozilla Text", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+body {
+  font-family: "Mozilla Text", sans-serif;
+}

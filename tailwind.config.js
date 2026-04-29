@@ -13,6 +13,9 @@ export default {
         'primary-gold': '#D3AF37',
         'secondary-gray': '#8e9aa0',
       },
+      fontFamily: {
+        vibes: ['"Petit Formal Script"', 'cursive'],
+      },
     },
   },
   plugins: [
