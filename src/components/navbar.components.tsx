@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { FaCode, FaHandshake } from "react-icons/fa";
 import { Link } from "react-router";
-
+import lightLogo from "../assets/code.svg"
+import darkLogo from "../assets/foot.svg"
 const navLinks = [
     { label: "Home", href: "#home" },
     { label: "About", href: "#about" },
@@ -55,7 +56,18 @@ function NavbarComponent() {
                         <Link to="/" className="flex gap-3 items-center group">
                             <div className="relative w-8 h-8 flex items-center justify-center">
                                 <div className="absolute inset-0 border border-primary-gold/40 rotate-45 group-hover:rotate-[135deg] transition-transform duration-500" />
-                                <FaCode size={14} className="text-primary-gold relative z-10" />
+
+                                <img
+                                    className="w-15 h-12 block dark:hidden"
+                                    src={lightLogo}
+                                    alt="logo"
+                                />
+
+                                <img
+                                    className="w-15 h-12 hidden dark:block"
+                                    src={darkLogo}
+                                    alt="logo"
+                                />
                             </div>
                             <div className="flex flex-col leading-none">
                                 <span className="text-[11px] tracking-[0.25em] uppercase text-primary-gold font-medium">

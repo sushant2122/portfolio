@@ -1,3 +1,5 @@
+
+import { FloatingShareButton } from "../components/floatingshare.component"
 import AboutSection from "../sections/about.section"
 import CertificationSection from "../sections/cert.section"
 import ContactSection from "../sections/contact.section"
@@ -18,6 +20,7 @@ function HomePage() {
             <ExperienceSection />
             <CertificationSection />
             <ContactSection />
+            <FloatingShareButton />
 
         </>
     )

@@ -10,6 +10,7 @@ import {
 import { IoIosPaper } from "react-icons/io";
 import { RiFilePaperFill } from "react-icons/ri";
 import { Link } from "react-router";
+import logo from "../assets/foot.svg"
 const socialLinks = [
     { icon: FaGithub, href: "https://github.com/sushant2122", label: "GitHub" },
     { icon: FaLinkedin, href: "https://www.linkedin.com/in/sushant-paudyal-a25aa5268/", label: "LinkedIn" },
@@ -52,7 +53,7 @@ function FooterComponent() {
                         <a href="#" className="flex gap-3 items-center mb-6 group w-fit">
                             <div className="relative w-8 h-8 flex items-center justify-center shrink-0">
                                 <div className="absolute inset-0 border border-primary-gold/40 rotate-45 group-hover:rotate-[135deg] transition-transform duration-500" />
-                                <FaCode size={14} className="text-primary-gold relative z-10" />
+                                <img className="w-15 h-12 relative" src={logo} alt="logo" />
                             </div>
                             <div className="flex flex-col leading-none">
                                 <span className="text-[10px] tracking-[0.25em] uppercase text-primary-gold font-medium">

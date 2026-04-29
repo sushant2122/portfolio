@@ -92,7 +92,7 @@ function LoginPage() {
                                 to="/"
                                 className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
                             >
-                                <img className="w-8 h-8 mr-2" src={logo} alt="logo" />
+                                <img className="w-15 h-12 mr-2" src={logo} alt="logo" />
                                 <span className="text-primary-gold">Sushant Paudyal</span>
                             </Link>
                         </div>
