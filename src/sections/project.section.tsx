@@ -10,8 +10,6 @@ interface Project {
     portfolio_img: string;
     git_URL: string;
     live_URL: string;
-    createdAt?: string;
-    updatedAt?: string;
 }
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
@@ -20,40 +18,58 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     return (
         <motion.div
             variants={{
-                hidden: { opacity: 0, y: 30 },
+                hidden: {
+                    opacity: 0,
+                    y: 40,
+                    scale: 0.96,
+                },
                 visible: {
                     opacity: 1,
                     y: 0,
-                    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+                    scale: 1,
+                    transition: {
+                        duration: 0.2,
+                        ease: [0.16, 1, 0.3, 1],
+                    },
                 },
             }}
-            className="group relative flex flex-col bg-white dark:bg-white/[0.03] border border-gray-100 dark:border-gray-700/50 hover:border-primary-gold/40 dark:hover:border-primary-gold/40 overflow-hidden transition-all duration-400 hover:shadow-[0_8px_30px_rgba(211,175,55,0.08)]"
+            whileHover={{
+                y: -6,
+                scale: 1.015,
+                transition: { duration: 0.1 },
+            }}
+            className=" rounded group relative flex flex-col bg-white dark:bg-white/[0.03] border border-gray-100 dark:border-gray-700/50 hover:border-primary-gold/40 overflow-hidden transition-all duration-300 hover:shadow-[0_10px_40px_rgba(211,175,55,0.12)]"
         >
             {/* Index badge */}
-            <div className="absolute top-4 left-4 z-10 w-7 h-7 flex items-center justify-center bg-primary-gold text-primary-black text-[11px] font-bold">
-                {String(index + 1).padStart(2, "0")}
-            </div>
+
 
             {/* Image */}
-            <div className="relative overflow-hidden h-48 bg-gray-100 dark:bg-gray-800">
-                <img
+            <motion.div
+                className="relative overflow-hidden h-48 bg-gray-100 dark:bg-gray-800"
+                whileHover="hover"
+            >
+                <motion.img
                     src={project.portfolio_img}
                     alt={project.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[20%] group-hover:grayscale-0"
+                    variants={{
+                        hover: { scale: 1.08 },
+                    }}
+                    transition={{ duration: 0.5 }}
+                    className="w-full h-full object-cover grayscale-[20%]"
                     onError={(e) => {
                         (e.target as HTMLImageElement).src =
                             "https://via.placeholder.com/400x300?text=No+Image";
                     }}
                 />
-                {/* Overlay on hover */}
-                <div className="absolute inset-0 bg-primary-black/0 group-hover:bg-primary-black/20 transition-all duration-400" />
-            </div>
+                <div className="absolute inset-0 bg-primary-black/0 group-hover:bg-primary-black/20 transition-all duration-300" />
+            </motion.div>
 
             {/* Content */}
             <div className="flex flex-col flex-1 p-5">
                 <h5 className="text-[17px] font-bold tracking-tight text-primary-black dark:text-white mb-2 group-hover:text-primary-gold transition-colors duration-200">
                     {project.name}
                 </h5>
+
                 <p className="text-[13px] leading-relaxed text-gray-500 dark:text-gray-400 line-clamp-3 flex-1 mb-5">
                     {project.description || "No description available."}
                 </p>
@@ -64,7 +80,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 {/* Actions */}
                 <div className="flex items-center gap-2">
                     {hasLive && (
-                        <a
+                        <motion.a
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.97 }}
                             href={project.live_URL}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -72,19 +90,23 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                         >
                             <FaLink size={11} />
                             Live Preview
-                        </a>
+                        </motion.a>
                     )}
-                    <a
+
+                    <motion.a
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.97 }}
                         href={project.git_URL}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label="GitHub Repository"
-                        className={`inline-flex items-center justify-center gap-2 border border-gray-200 dark:border-gray-700 hover:border-primary-gold/50 text-gray-500 dark:text-gray-400 hover:text-primary-gold dark:hover:text-primary-gold bg-transparent transition-all duration-200 px-4 py-2.5 ${!hasLive ? "flex-1 text-[12px] font-semibold tracking-wide" : ""
+                        className={`inline-flex items-center justify-center gap-2 border border-gray-200 dark:border-gray-700 hover:border-primary-gold/50 text-gray-500 dark:text-gray-400 hover:text-primary-gold transition-all duration-200 px-4 py-2.5 ${!hasLive
+                            ? "flex-1 text-[12px] font-semibold tracking-wide"
+                            : ""
                             }`}
                     >
                         <FaGithub size={hasLive ? 16 : 14} />
                         {!hasLive && <span>View Code</span>}
-                    </a>
+                    </motion.a>
                 </div>
             </div>
         </motion.div>
@@ -110,7 +132,9 @@ function ProjectSection() {
         }
     };
 
-    useEffect(() => { listPortfolio(); }, []);
+    useEffect(() => {
+        listPortfolio();
+    }, []);
 
     const validProjects = projects.filter(
         (p) => p.name && p.git_URL && p.portfolio_img
@@ -121,11 +145,12 @@ function ProjectSection() {
             id="project"
             className="relative overflow-hidden bg-gray-50 dark:bg-[#17202f] py-24 px-6"
         >
-            {/* Background geometry */}
+            {/* Background */}
             <div
                 className="pointer-events-none absolute top-0 right-0 w-72 h-72 opacity-[0.04]"
                 style={{
-                    backgroundImage: "radial-gradient(circle, #D3AF37 1px, transparent 1px)",
+                    backgroundImage:
+                        "radial-gradient(circle, #D3AF37 1px, transparent 1px)",
                     backgroundSize: "18px 18px",
                 }}
             />
@@ -177,25 +202,29 @@ function ProjectSection() {
                     </div>
                 )}
 
-                {/* Empty */}
-                {!loading && !error && validProjects.length === 0 && (
-                    <p className="text-center text-gray-400 py-24">No projects found.</p>
-                )}
-
                 {/* Grid */}
                 {!loading && !error && validProjects.length > 0 && (
                     <motion.div
                         initial="hidden"
                         whileInView="visible"
-                        viewport={{ once: true }}
+                        viewport={{ once: true, margin: "-50px" }}
                         variants={{
                             hidden: {},
-                            visible: { transition: { staggerChildren: 0.1 } },
+                            visible: {
+                                transition: {
+                                    staggerChildren: 0.12,
+                                    delayChildren: 0.1,
+                                },
+                            },
                         }}
                         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                     >
                         {validProjects.map((project, i) => (
-                            <ProjectCard key={project.portfolio_id} project={project} index={i} />
+                            <ProjectCard
+                                key={project.portfolio_id}
+                                project={project}
+                                index={i}
+                            />
                         ))}
                     </motion.div>
                 )}

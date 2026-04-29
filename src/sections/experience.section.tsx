@@ -10,6 +10,26 @@ interface Experience {
     to: string;
 }
 
+function getStatus(experience: Experience): "ongoing" | "future" | "completed" {
+    const toRaw = (experience.to || "").toLowerCase().trim();
+    // Check for ongoing/present first
+    if (["ongoing", "present", ""].includes(toRaw)) return "ongoing";
+    // Check if the end date is in the future
+    if (new Date(experience.to) > new Date()) return "future";
+    return "completed";
+}
+
+function formatMonthYear(dateString: string): string {
+    if (!dateString) return "Present";
+    const lower = dateString.toLowerCase();
+    if (lower === "ongoing" || lower === "present") return "Present";
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+
+    return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
 function TimelineItem({ experience, index }: { experience: Experience; index: number }) {
     const ref = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
@@ -23,16 +43,34 @@ function TimelineItem({ experience, index }: { experience: Experience; index: nu
         return () => observer.disconnect();
     }, []);
 
-    const getYear = (dateString: string): string => {
-        if (!dateString) return "Present";
-        const lower = dateString.toLowerCase();
-        if (lower === "ongoing" || lower === "present") return "Present";
-        return dateString.split("-")[0];
-    };
+    const status = getStatus(experience);
+    const isOngoing = status === "ongoing";
+    const isFuture = status === "future";
+    const isActive = isOngoing || isFuture;
 
-    const ongoing = ["ongoing", "present", ""].includes((experience.to || "").toLowerCase());
-    const fromYear = getYear(experience.from);
-    const toYear = getYear(experience.to);
+    const fromFormatted = formatMonthYear(experience.from);
+    const toFormatted = isOngoing ? "Present" : formatMonthYear(experience.to);
+
+    // Dot styling based on status
+    const dotColor = isFuture ? "#6DB8FF" : isOngoing ? "#D3AF37" : "#D3AF37";
+    const dotGlow = isFuture ? "rgba(109,184,255,0.08)" : "rgba(211,175,55,0.08)";
+    const dotSize = isActive ? "w-3.5 h-3.5" : "w-2.5 h-2.5";
+    const pulseClass = isActive ? "animate-pulse" : "";
+
+    // Badge styling based on status
+    let badgeStyle = {};
+    let badgeLabel = "";
+
+    if (isOngoing) {
+        badgeStyle = { color: "#D3AF37", border: "0.5px solid rgba(211,175,55,0.3)", background: "rgba(211,175,55,0.06)" };
+        badgeLabel = "Currently here";
+    } else if (isFuture) {
+        badgeStyle = { color: "#6DB8FF", border: "0.5px solid rgba(109,184,255,0.3)", background: "rgba(109,184,255,0.06)" };
+        badgeLabel = "Currently here";
+    } else {
+        badgeStyle = { color: "#D3AF37", border: "0.5px solid var(--color-border-tertiary)" };
+        badgeLabel = "Completed";
+    }
 
     return (
         <div
@@ -44,21 +82,20 @@ function TimelineItem({ experience, index }: { experience: Experience; index: nu
                 transition: `opacity 0.6s ease ${index * 90}ms, transform 0.6s ease ${index * 90}ms`,
             }}
         >
-            {/* Year column */}
-            <div className="w-24 min-w-[96px] pr-5 text-right pt-[18px]">
+            {/* Date column with month and year */}
+            <div className="w-28 min-w-[112px] pr-5 text-right pt-[18px]">
                 <div className="text-[12px] font-semibold text-primary-gold leading-relaxed">
-                    {fromYear}
+                    {fromFormatted}
                     <br />
-                    <span className="text-[11px] text-gray-400">→ {toYear}</span>
+                    {(isFuture) ? <></> : <> <span className="text-[11px] text-gray-400">→ {toFormatted}</span></>}
                 </div>
             </div>
 
             {/* Dot column */}
             <div className="w-10 min-w-[40px] flex flex-col items-center">
                 <div
-                    className={`mt-5 z-10 shrink-0 rounded-full border-2 border-primary-gold bg-primary-gold ${ongoing ? "w-3.5 h-3.5 animate-pulse" : "w-2.5 h-2.5"
-                        }`}
-                    style={{ boxShadow: "0 0 0 4px rgba(211,175,55,0.08)" }}
+                    className={`mt-5 z-10 shrink-0 rounded-full border-2 border-primary-gold bg-primary-gold ${dotSize} ${pulseClass}`}
+                    style={{ boxShadow: `0 0 0 4px ${dotGlow}`, backgroundColor: dotColor, borderColor: dotColor }}
                 />
             </div>
 
@@ -69,14 +106,10 @@ function TimelineItem({ experience, index }: { experience: Experience; index: nu
                 <p className="text-[11px] font-semibold tracking-widest uppercase text-primary-gold mb-3">{experience.position}</p>
                 <span
                     className="inline-flex items-center gap-1.5 text-[10px] font-medium tracking-wider uppercase px-2 py-0.5"
-                    style={
-                        ongoing
-                            ? { color: "#D3AF37", border: "0.5px solid rgba(211,175,55,0.3)", background: "rgba(211,175,55,0.06)" }
-                            : { color: "#D3AF37", border: "0.5px solid var(--color-border-tertiary)" }
-                    }
+                    style={badgeStyle}
                 >
                     <span className="w-1.5 h-1.5 rounded-full bg-current dark:text-white" />
-                    {ongoing ? "Currently here" : "Completed"}
+                    {badgeLabel}
                 </span>
             </div>
         </div>
@@ -104,10 +137,21 @@ function ExperienceSection() {
 
     useEffect(() => { listExperiences(); }, []);
 
-    const sorted = [...experiences].sort((a, b) => new Date(b.from).getTime() - new Date(a.from).getTime());
+    // Sort: ongoing/future first (active), then by most recent from date
+    const sorted = [...experiences].sort((a, b) => {
+        const statusA = getStatus(a);
+        const statusB = getStatus(b);
+        const activeA = statusA === "ongoing" || statusA === "future";
+        const activeB = statusB === "ongoing" || statusB === "future";
+
+        if (activeA !== activeB) {
+            return activeA ? -1 : 1;
+        }
+        return new Date(b.from).getTime() - new Date(a.from).getTime();
+    });
 
     return (
-        <section id="experience" className="relative overflow-hidden bg-white dark:bg-[#1D283C] py-24 px-6">
+        <section id="journey" className="relative overflow-hidden bg-white dark:bg-[#1D283C] py-24 px-6">
             {/* Background accents — same as SkillSection */}
             <div className="pointer-events-none absolute bottom-0 right-0 w-[400px] h-[400px] bg-primary-gold/[0.03] rounded-full blur-3xl" />
             <div
@@ -179,11 +223,11 @@ function ExperienceSection() {
                         variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
                         className="relative"
                     >
-                        {/* Vertical line */}
+                        {/* Vertical line - adjusted left position to match wider date column */}
                         <div
                             className="absolute top-0 bottom-0 w-[1px]"
                             style={{
-                                left: "136px",
+                                left: "152px",
                                 background: "linear-gradient(to bottom, #D3AF37, rgba(211,175,55,0.05))",
                             }}
                         />

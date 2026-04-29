@@ -9,7 +9,7 @@ const navLinks = [
     { label: "About", href: "#about" },
     { label: "Skills", href: "#skill" },
     { label: "Projects", href: "#project" },
-    { label: "Experience", href: "#experience" },
+    { label: "Journey", href: "#journey" },
     { label: "Certification", href: "#certification" },
 ];
 
@@ -59,7 +59,7 @@ function NavbarComponent() {
                             </div>
                             <div className="flex flex-col leading-none">
                                 <span className="text-[11px] tracking-[0.25em] uppercase text-primary-gold font-medium">
-                                    Portfolio
+                                    Craft With Sushant
                                 </span>
                                 <span className="text-[15px] font-bold tracking-tight text-primary-black dark:text-white">
                                     Sushant Paudyal
@@ -91,24 +91,24 @@ function NavbarComponent() {
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.5, delay: 0.6 }}
-                                className="rounded flex items-center gap-2 bg-primary-gold hover:bg-[#c4a030] text-primary-black text-[13px] font-semibold tracking-wide px-4 py-2 transition-all duration-200 shadow-[0_0_0_0_rgba(211,175,55,0.4)] hover:shadow-[0_0_16px_2px_rgba(211,175,55,0.3)]"
+                                className="sm:px-3 sm:py-2 rounded flex items-center gap-2 border border-gray-200 dark:border-gray-600 hover:border-primary-gold dark:hover:border-primary-gold text-primary-black dark:text-gray-300 hover:text-primary-gold dark:hover:text-primary-gold bg-transparent hover:bg-transparent  text-[13px] px-4 py-2.5 font-semibold tracking-wide transition-all duration-200 "
                             >
                                 <FaHandshake size={14} />
                                 <span className="hidden sm:block">Hire Me</span>
                             </motion.a>
 
-                            <DarkThemeToggle className="border border-gray-200 dark:border-gray-600 hover:border-primary-gold dark:hover:border-primary-gold text-primary-black dark:text-gray-300 hover:text-primary-gold dark:hover:text-primary-gold bg-transparent hover:bg-transparent transition-all duration-200" />
+                            <DarkThemeToggle className=" py-2 px-3 border border-gray-200 dark:border-gray-600 hover:border-primary-gold dark:hover:border-primary-gold text-primary-black dark:text-gray-300 hover:text-primary-gold dark:hover:text-primary-gold bg-transparent hover:bg-transparent transition-all duration-200" />
 
                             {/* Mobile menu toggle */}
                             <button
                                 onClick={() => setismenuopen(!ismenuopen)}
-                                className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-primary-gold border border-transparent hover:border-primary-gold/30 transition-all duration-200"
+                                className="lg:hidden py-2.5 px-3 rounded border border-gray-200 dark:border-gray-600  text-gray-600 dark:text-gray-300 hover:text-primary-gold  hover:border-primary-gold dark:hover:text-primary-gold  dark:hover:border-primary-gold transition-all duration-200"
                                 aria-label="Toggle menu"
                             >
                                 <div className="w-5 flex flex-col gap-[5px]">
                                     <motion.span
                                         animate={ismenuopen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                                        className="block h-[1.5px] bg-current transition-all"
+                                        className="block h-[1.5px] bg-current  transition-all"
                                     />
                                     <motion.span
                                         animate={ismenuopen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
@@ -148,9 +148,7 @@ function NavbarComponent() {
                                             className="flex items-center justify-between py-3 text-[14px] font-medium text-gray-700 dark:text-gray-300 hover:text-primary-gold dark:hover:text-primary-gold border-b border-gray-100 dark:border-gray-700/50 last:border-0 transition-colors duration-200"
                                         >
                                             {link.label}
-                                            <span className="text-primary-gold/50 text-xs tracking-widest">
-                                                0{i + 1}
-                                            </span>
+
                                         </a>
                                     </motion.li>
                                 ))}

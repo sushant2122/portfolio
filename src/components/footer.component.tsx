@@ -56,7 +56,7 @@ function FooterComponent() {
                             </div>
                             <div className="flex flex-col leading-none">
                                 <span className="text-[10px] tracking-[0.25em] uppercase text-primary-gold font-medium">
-                                    Portfolio
+                                    Craft With Sushant
                                 </span>
                                 <span className="text-[15px] font-bold tracking-tight text-white">
                                     Sushant Paudyal
